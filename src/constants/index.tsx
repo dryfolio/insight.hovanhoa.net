@@ -5,7 +5,7 @@ const BASE_URL = "https://hovanhoa.net";
 const TWITTER = "_hovanhoa_";
 const GITHUB = "hovanhoa";
 const IMAGE = "/avatar.png";
-const OG_IMAGE_BG = "/og-bg.png";
+const OG_IMAGE_BG = "/og-bg.jpg";
 const HOST = "hovanhoa.hashnode.dev";
 const HASHNODE_API = "https://gql.hashnode.com";
 

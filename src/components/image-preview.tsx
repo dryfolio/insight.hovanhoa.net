@@ -4,7 +4,7 @@ export default function ImagePreview({ title }: { title: string }) {
   return (
     <div
       style={{
-        backgroundImage: "url(/og-bg.png)",
+        backgroundImage: "url(/og-bg.jpg)",
         backgroundSize: "contain",
         backgroundRepeat: "no-repeat",
         aspectRatio: "16 / 9",
