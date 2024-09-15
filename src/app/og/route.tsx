@@ -21,7 +21,7 @@ export async function GET(req: NextRequest) {
           height: "100%",
           width: "100%",
           display: "flex",
-          backgroundImage: "url(https://hovanhoa.vercel.app/og-bg.png)",
+          backgroundImage: "url(https://hovanhoa.net/og-bg.png)",
         }}
       >
         <div

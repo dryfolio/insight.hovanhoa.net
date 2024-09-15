@@ -5,7 +5,7 @@ const nextConfig = {
         remotePatterns: [
             {
                 protocol: 'https',
-                hostname: 'hovanhoa.vercel.app',
+                hostname: 'hovanhoa.net',
             },
         ],
     }, 

@@ -20,7 +20,7 @@ export async function generateMetadata({
     return;
   }
 
-  let ogImage = `https://hovanhoa.vercel.app/og?title=${post.title}`;
+  let ogImage = `https://hovanhoa.net/og?title=${post.title}`;
 
   return {
     title: post.title,
@@ -84,7 +84,7 @@ export default async function Page({ params }: { params: { post: string } }) {
               datePublished: post.publishedAt,
               dateModified: post.publishedAt,
               description: post.brief,
-              image: `https://hovanhoa.vercel.app/og?title=${post.title}`,
+              image: `https://hovanhoa.net/og?title=${post.title}`,
               url: `${BASE_URL}/${postSlug}`,
               author: {
                 "@type": "Person",
