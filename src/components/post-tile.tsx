@@ -35,7 +35,7 @@ export default function PostTile({ post }: { post: PostExcerpt }) {
           {truncate(post.brief, 160)}
         </p>
         <div className="mt-4 relative">
-          <ImagePreview title={post.title} />
+          <ImagePreview title={post.title} imageURL={post.coverImage?.url}/>
           <div className="absolute inset-0 bg-gradient-to-b from-transparent  to-[#ffffff90] rounded-2xl" />
         </div>
       </div>

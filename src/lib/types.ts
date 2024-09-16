@@ -5,6 +5,9 @@ export type PostExcerpt = {
   url: string;
   tags: Tag[];
   publishedAt: string;
+  coverImage: {
+    url: string;
+  }
   slug: string;
 };
 
