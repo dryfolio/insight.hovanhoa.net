@@ -16,6 +16,9 @@ export type Post = {
   tags: Tag[];
   publishedAt: string;
   brief: string;
+  coverImage: {
+    url: string;
+  }
   readTimeInMinutes: number;
   features: {
     tableOfContents: {

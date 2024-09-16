@@ -15,7 +15,6 @@ const DESCRIPTION = (
         <br/> Software Engineer with 2+ years of experience.
         I am confident in my knowledge of software development concepts,
         industry best practices, and modern software technologies.
-
         <br/>
         <br/>
         Tech stacks:{" "}

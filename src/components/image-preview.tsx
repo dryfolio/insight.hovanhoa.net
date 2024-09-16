@@ -1,6 +1,15 @@
 import React from "react";
 
-export default function ImagePreview({ title }: { title: string }) {
+export default function ImagePreview({ title, imageURL }: { title: string, imageURL: string | undefined }) {
+    if (imageURL) {
+        return <img style={{
+            backgroundSize: "contain",
+            backgroundRepeat: "no-repeat",
+            aspectRatio: "16 / 9",
+            borderRadius: 20,
+        }} src={imageURL}/>
+    }
+
   return (
     <div
       style={{
