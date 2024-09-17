@@ -10,6 +10,8 @@ export default function Badge({
   // This is temporary, and will replace this with a more dynamic solution
   const getColor = (label: string) => {
     switch (label) {
+      case "Go Language":
+        return "bg-sky-100 text-sky-800 border-sky-200"
       case "Docker":
         return "bg-sky-100 text-sky-800 border-sky-200";
       case "Web Development":
@@ -18,7 +20,7 @@ export default function Badge({
         return "bg-green-100 text-green-800 border-green-200";
       case "Web3":
         return "bg-purple-100 text-purple-800 border-purple-200";
-      case "JavaScript":
+      case "System Design":
         return "bg-yellow-100 text-yellow-800 border-yellow-200";
     }
   };
