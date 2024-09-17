@@ -15,8 +15,11 @@ async function getPosts(
     headers: {
       "Content-Type": "application/json",
     },
-    cache: "no-store",
+    // cache: "no-store",
     body: JSON.stringify({ query: GET_POST }),
+    next: {
+      revalidate: 1,
+    },
   });
 
   const { data } = await res.json();
@@ -32,7 +35,6 @@ export default async function Home() {
   const { posts } = await getPosts();
 
   console.log("posts", posts);
-
 
   return (
       <main className="min-h-screen relative">
