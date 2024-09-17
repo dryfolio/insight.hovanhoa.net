@@ -24,9 +24,9 @@ async function getPosts(
 
   const { data } = await res.json();
 
-  console.log(data)
-
   const posts = data.publication.posts.edges.map((edge: any) => edge.node);
+
+  console.log(posts);
 
   return {
     posts,
