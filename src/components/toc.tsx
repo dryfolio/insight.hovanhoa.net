@@ -7,7 +7,7 @@ export default function TableOfContent({ items }: { items: TableOfContent[] }) {
   return (
     <div className='text-sm leading-7 text-slate-500 prose'>
       {items.map(item => {
-        if (item.level === 1 || item.level === 2) {
+        if (item.level === 1) {
           return (
             <div
               className='content-block'
