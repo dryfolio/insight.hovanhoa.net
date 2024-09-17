@@ -39,4 +39,4 @@ jobs:
         with:
           project: "hovanhoa-net"
           entrypoint: "https://deno.land/std@0.217.0/http/file_server.ts"
-          root: ".next/standalone"
+          root: ""
