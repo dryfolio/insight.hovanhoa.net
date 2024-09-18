@@ -6,7 +6,7 @@ const GoogleAnalytics = () => {
         <>
             <Script
                 strategy='lazyOnload'
-                src={`https://www.googletagmanager.com/gtag/js?id=G-B75Y2M2QWM`}
+                src={`https://www.googletagmanager.com/gtag/js?id=G-8LFMKNB1NJ`}
             />
 
             <Script id='' strategy='lazyOnload'>
@@ -14,7 +14,7 @@ const GoogleAnalytics = () => {
               window.dataLayer = window.dataLayer || [];
               function gtag(){dataLayer.push(arguments);}
               gtag('js', new Date());
-              gtag('config', 'G-B75Y2M2QWM', {
+              gtag('config', 'G-8LFMKNB1NJ', {
               page_path: window.location.pathname,
               });
           `}
