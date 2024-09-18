@@ -138,7 +138,7 @@ export default async function Page({ params }: { params: { post: string } }) {
             ></div>
           </article>
         </section>
-        <div className="top-60 left-20 h-full w-full fixed lg:block hidden">
+        <div className="top-60 left-20 h-full w-1/6 lg:block fixed lg">
           <TableOfContent items={post.features.tableOfContents.items}/>
         </div>
         <div className="py-8 md:py-12 pb-0 px-4 sm:px-6 lg:pl-52 mb-8 md:mb-0">
