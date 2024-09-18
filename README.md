@@ -1,7 +1,5 @@
 # hovanhoa.net
 
-![image](/public/github-banner.png)
-
 Built with Next.js, TypeScript, and Tailwind CSS.
 
 - Framework: Next.js
