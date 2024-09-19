@@ -11,6 +11,9 @@ query Publication {
           id
           title
           brief
+          coverImage {
+            url
+          }
           tags {
             name
           }
@@ -38,6 +41,9 @@ query Publication($slug: String!) {
       }
       publishedAt
       brief
+      coverImage {
+        url
+      }
       readTimeInMinutes
       features {
         tableOfContents {

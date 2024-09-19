@@ -5,6 +5,9 @@ export type PostExcerpt = {
   url: string;
   tags: Tag[];
   publishedAt: string;
+  coverImage: {
+    url: string;
+  }
   slug: string;
 };
 
@@ -16,6 +19,9 @@ export type Post = {
   tags: Tag[];
   publishedAt: string;
   brief: string;
+  coverImage: {
+    url: string;
+  }
   readTimeInMinutes: number;
   features: {
     tableOfContents: {

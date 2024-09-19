@@ -36,7 +36,7 @@ export async function generateMetadata({
       url: `${BASE_URL}/${params.post}`,
       images: [
         {
-          url: ogImage,
+          url: post.coverImage.url
         },
       ],
     },
@@ -78,27 +78,28 @@ export default async function Page({ params }: { params: { post: string } }) {
   }
 
   return (
-      <>
-        <main className="min-h-screen relative pt-8">
-          <script
-              type="application/ld+json"
-              suppressHydrationWarning
-            dangerouslySetInnerHTML={{
-              __html: JSON.stringify({
-                "@context": "https://schema.org",
-                "@type": "BlogPosting",
-                headline: post.title,
-                datePublished: post.publishedAt,
-                dateModified: post.publishedAt,
-                description: post.brief,
-                image: `https://hovanhoa.net/og?title=${post.title}`,
-                url: `${BASE_URL}/${postSlug}`,
-                author: {
-                  "@type": "Person",
-                  name: NAME,
-                },
-              }),
-            }}
+    <>
+      <main className="min-h-screen relative pt-8">
+        <script
+          type="application/ld+json"
+          suppressHydrationWarning
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "BlogPosting",
+              headline: post.title,
+              datePublished: post.publishedAt,
+              dateModified: post.publishedAt,
+              description: post.brief,
+              image: post.coverImage.url,
+              // image: `https://hovanhoa.net/og?title=${post.title}`,
+              url: `${BASE_URL}/${postSlug}`,
+              author: {
+                "@type": "Person",
+                name: NAME,
+              },
+            }),
+          }}
         />
         <section className="relative mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 overflow-hidden">
           <div className="items-center flex justify-between mb-6">
@@ -128,8 +129,8 @@ export default async function Page({ params }: { params: { post: string } }) {
               />
           ))}
           <div className="relative my-2">
-            <ImagePreview title={post.title}/>
-            <div className="absolute inset-0 bg-gradient-to-b from-transparent  to-[#ffffff90] rounded-2xl"/>
+            <ImagePreview title={post.title} imageURL={post.coverImage.url} />
+            <div className="absolute inset-0 bg-gradient-to-b from-transparent  to-[#ffffff90] rounded-2xl" />
           </div>
           <article className="text-sm leading-7 text-slate-500 prose max-w-none my-4">
             <div
