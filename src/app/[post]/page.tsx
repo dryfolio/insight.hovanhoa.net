@@ -36,7 +36,7 @@ export async function generateMetadata({
       url: `${BASE_URL}/${params.post}`,
       images: [
         {
-          url: post.coverImage.url
+          url: post?.coverImage?.url
         },
       ],
     },
@@ -91,7 +91,7 @@ export default async function Page({ params }: { params: { post: string } }) {
               datePublished: post.publishedAt,
               dateModified: post.publishedAt,
               description: post.brief,
-              image: post.coverImage.url,
+              image: post?.coverImage?.url,
               // image: `https://hovanhoa.net/og?title=${post.title}`,
               url: `${BASE_URL}/${postSlug}`,
               author: {
@@ -129,7 +129,7 @@ export default async function Page({ params }: { params: { post: string } }) {
               />
           ))}
           <div className="relative my-2">
-            <ImagePreview title={post.title} imageURL={post.coverImage.url} />
+            <ImagePreview title={post.title} imageURL={post?.coverImage?.url} />
             <div className="absolute inset-0 bg-gradient-to-b from-transparent  to-[#ffffff90] rounded-2xl" />
           </div>
           <article className="text-sm leading-7 text-slate-500 prose max-w-none my-4">
