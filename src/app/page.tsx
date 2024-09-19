@@ -7,6 +7,7 @@ import { type PostExcerpt } from "@/lib/types";
 import Link from "next/link";
 import {Footer} from "@/components/footer";
 import { unstable_noStore as noStore } from "next/cache";
+import {HashNode} from "@/lib/hashnode";
 
 
 async function getPosts(
@@ -37,7 +38,12 @@ async function getPosts(
 export default async function Home() {
     noStore()
 
-  const { posts } = await getPosts();
+  const posts = await HashNode.getArticles({
+      page: 1,
+      pageSize: 20,
+  });
+
+    const postsArr = posts?.data?.publication?.postsViaPage?.nodes;
 
   return (
       <main className="min-h-screen relative">
@@ -46,7 +52,7 @@ export default async function Home() {
           </div>
           <Hero/>
           <section className="relative mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 overflow-hidden">
-              {posts.map((post: PostExcerpt) => (
+              {postsArr?.map((post: PostExcerpt) => (
                   <Link href={`/${post.slug}`} prefetch={false} key={post.id} replace>
                       <PostTile key={post.id} post={post}/>
                   </Link>
