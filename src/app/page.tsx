@@ -6,10 +6,13 @@ import { GET_POST } from "@/lib/gql";
 import { type PostExcerpt } from "@/lib/types";
 import Link from "next/link";
 import {Footer} from "@/components/footer";
+import { unstable_noStore as noStore } from "next/cache";
+
 
 async function getPosts(
   cursor?: string
 ): Promise<{ posts: PostExcerpt[]; endCursor?: string }> {
+    noStore()
   const res = await fetch(HASHNODE_API, {
     method: "POST",
     headers: {
@@ -32,6 +35,8 @@ async function getPosts(
 }
 
 export default async function Home() {
+    noStore()
+
   const { posts } = await getPosts();
 
   return (
