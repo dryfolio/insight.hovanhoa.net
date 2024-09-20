@@ -40,7 +40,7 @@ export const GET_ARTICLES = gql`
   }
 `;
 
-export const GET_ARTICLE_BY_POST = `
+export const GET_ARTICLE_BY_POST = gql`
   query Publication($host: String, $slug: String!) {
     publication(host: $host) {
       id
@@ -54,13 +54,14 @@ export const GET_ARTICLE_BY_POST = `
         brief
         readTimeInMinutes
         features {
-        tableOfContents {
-          items {
-            id
-            level
-            slug
-            title
-            parentId
+          tableOfContents {
+            items {
+              id
+              level
+              slug
+              title
+              parentId
+            }
           }
         }
         author {

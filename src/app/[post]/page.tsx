@@ -2,76 +2,20 @@ import Badge from '@/components/badge'
 import ImagePreview from '@/components/image-preview'
 import Navbar from '@/components/nav'
 import TableOfContent from '@/components/toc'
-import { BASE_URL, HASHNODE_API, IMAGE, NAME } from '@/constants'
+import { BASE_URL, IMAGE, NAME } from '@/constants'
 import formatDate from '@/lib/format-date'
-import { GET_POST_BY_SLUG } from '@/lib/gql'
 import { type Tag, type Post } from '@/lib/types'
-import { Metadata } from 'next'
 import Image from 'next/image'
 import React from 'react'
 import Link from 'next/link'
 import { Footer } from '@/components/footer'
 import NotFound from '@/app/not-found'
+import {HashNode} from "@/lib/hashnode";
 
-export async function generateMetadata({
-    params,
-}: {
-    params: { post: string }
-}): Promise<Metadata | undefined> {
-    let post = await getPost(params.post)
-    if (!post) {
-        return
-    }
-
-    let ogImage = `https://hovanhoa.net/og?title=${post.title}`
-
-    return {
-        title: post.title,
-        description: post.brief,
-        openGraph: {
-            title: post.title,
-            description: post.brief,
-            type: 'article',
-            publishedTime: post.publishedAt,
-            url: `${BASE_URL}/${params.post}`,
-            images: [
-                {
-                    url: post?.coverImage?.url,
-                },
-            ],
-        },
-        twitter: {
-            card: 'summary_large_image',
-            title: post.title,
-            description: post.brief,
-            images: [ogImage],
-        },
-    }
-}
-
-async function getPost(postSlug: string): Promise<Post> {
-    const res = await fetch(HASHNODE_API, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-            query: GET_POST_BY_SLUG,
-            variables: { slug: postSlug },
-        }),
-        next: {
-            revalidate: 1,
-        },
-    })
-
-    const { data } = await res.json()
-    return data.publication.post
-}
 
 export default async function Page({ params }: { params: { post: string } }) {
     const postSlug = params.post
-
-    const post = await getPost(postSlug)
+    const post:Post = await HashNode.getArticleBySlug(postSlug)
 
     if (!post) {
         return <NotFound />
