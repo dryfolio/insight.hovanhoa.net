@@ -11,18 +11,17 @@ export const HashNode = {
         page?: number;
     }): Promise<any> => {
         try {
-            const res = await client.query({
+            return await client.query({
                 query: GET_ARTICLES,
                 variables: {
                     host: process.env.NEXT_PUBLIC_HASHNODE_HOST!,
-                    pageSize: pageSize || 6,
+                    pageSize: pageSize || 20,
                     page: page || 1,
                 },
                 fetchPolicy: "no-cache",
             });
-            return res
         } catch (error) {
-            console.error("[ERROR]", error);
+            console.error("[ERROR 1]", error);
             return error;
         }
     },
@@ -38,7 +37,7 @@ export const HashNode = {
                 fetchPolicy: "no-cache",
             });
         } catch (error) {
-            console.error("[ERROR]", error);
+            console.error("[ERROR 2]", error);
             return error;
         }
     },
@@ -56,7 +55,7 @@ export const HashNode = {
 
             return res?.data?.publication?.post
         } catch (error) {
-            console.error("[ERROR]", error);
+            console.error("[ERROR 3]", error);
             return error;
         }
     },
