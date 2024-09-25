@@ -9,7 +9,6 @@ export default function Badge({
 }) {
     // This is temporary, and will replace this with a more dynamic solution
     const getColor = (label: string) => {
-        console.log(label)
         switch (label) {
             case 'Go Language':
                 return 'bg-sky-100 text-sky-800 border-sky-200'

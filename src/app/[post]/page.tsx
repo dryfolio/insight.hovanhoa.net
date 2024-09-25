@@ -90,7 +90,7 @@ export default async function Page({ params }: { params: { post: string } }) {
                         ></div>
                     </article>
                 </section>
-                <div className="top-60 left-20 h-full w-1/5 lg:block fixed lg">
+                <div className="top-60 left-20 h-full w-1/5 lg:block fixed lg hidden">
                     <TableOfContent
                         items={post.features.tableOfContents.items}
                     />
