@@ -10,6 +10,8 @@ export default function Badge({
     // This is temporary, and will replace this with a more dynamic solution
     const getColor = (label: string) => {
         switch (label) {
+            case 'concurrency':
+                return 'bg-orange-100 text-orange-800 border-orange-200'
             case 'Go Language':
                 return 'bg-sky-100 text-sky-800 border-sky-200'
             case 'Docker':
