@@ -18,8 +18,10 @@ export default function Badge({
                 return 'bg-sky-100 text-sky-800 border-sky-200'
             case 'Web Development':
                 return 'bg-green-100 text-green-800 border-green-20'
-            case "CAP-Theorem":
+            case "ci-cd":
                 return 'bg-cyan-100 text-cyan-800 border-cyan-20'
+            case "Devops":
+                return 'bg-red-100 text-red-800 border-red-20'
             case 'distributed system':
                 return 'bg-pink-200 text-pink-800 border-pink-200'
             case 'snowflake':
