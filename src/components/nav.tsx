@@ -15,7 +15,7 @@ export default function Navbar() {
                     </Link>
                     <Link
                         className="hover:text-slate-900 transition duration-300 ease-in-out"
-                        href="/insight"
+                        href="https://insight.hovanhoa.net"
                     >
                         Insight
                     </Link>
