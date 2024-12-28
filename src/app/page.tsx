@@ -7,7 +7,7 @@ import {CloudflareGraph} from "@/lib/cloudflare";
 
 
 export const metadata = {
-    title: 'insight | hovanhoa',
+    title: 'hovanhoa | insight',
     description: 'Blog Insight from Cloudflare.',
 }
 
