@@ -15,9 +15,9 @@ export default function Navbar() {
                     </Link>
                     <Link
                         className="hover:text-slate-900 transition duration-300 ease-in-out"
-                        href="/insights"
+                        href="/insight"
                     >
-                        Insights
+                        Insight
                     </Link>
                     <Link
                         className="hover:text-slate-900 transition duration-300 ease-in-out"

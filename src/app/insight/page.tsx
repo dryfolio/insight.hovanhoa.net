@@ -7,14 +7,14 @@ import {CloudflareGraph} from "@/lib/cloudflare";
 
 
 export const metadata = {
-    title: 'Blog Insights',
-    description: 'Blog Insights data collected from Cloudflare.',
+    title: 'Insight',
+    description: 'Blog Insight from Cloudflare.',
 }
 
 export const revalidate = 86400
 
 
-export default async function Insights() {
+export default async function Insight() {
 
     return (
         <main className="min-h-screen relative">

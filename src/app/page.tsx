@@ -22,7 +22,7 @@ export default async function Home() {
                 <Navbar />
             </div>
             <Hero />
-            <section className="relative mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 overflow-hidden">
+            <section className="relative mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 overflow-hidden mb-30">
                 {postsArr?.map((post: PostExcerpt) => (
                     <Link
                         href={`/${post.slug}`}

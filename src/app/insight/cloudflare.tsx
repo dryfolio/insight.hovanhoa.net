@@ -1,5 +1,4 @@
 import { AreaChart, Flex, Metric, Text } from '@tremor/react'
-import { TextDataSource } from '../../components/text-data-source'
 import {CloudflareAnalyticsByDate} from "../../../packages/interface/cloudflare";
 import {CloudflareGraph} from "@/lib/cloudflare";
 
@@ -20,7 +19,7 @@ export async function Cloudflare() {
 
   const chartData = data.viewer.zones[0]?.httpRequests1dGroups?.map((item: { date: { date: any; }; sum: { pageViews: any; requests: any; }; uniq: { uniques: any; }; }) => {
     return {
-      date: item.date.date,
+      date:  item.date.date,
       'Page Views': item.sum.pageViews,
       Requests: item.sum.requests,
       'Unique Visitors': item.uniq.uniques,
@@ -34,49 +33,42 @@ export async function Cloudflare() {
       valueDesc: 'in 30 days',
     },
     {
-      title: 'Total Pageviews',
+      title: 'Total Page views',
       value: await dataFormatter(totalPageviews || 0),
       valueDesc: 'in 30 days',
     },
   ]
 
   return (
-      <div className="mx-auto">
-        <Flex className="mb-5">
+      <div className="w-1/2 mt-15 mx-auto">
+        <Flex className="mb-10">
           {cards.map((card) => (
               <div key={card.title}>
-                <Text className="dark:text-white">{card.title}</Text>
+                <Text className="text-gray-500 text-sm">{card.title}</Text>
                 <Flex
                     alignItems="baseline"
                     className="space-x-3"
                     justifyContent="start"
                 >
-                  <Metric className="dark:text-black">{card.value}</Metric>
-                  <Text className="truncate dark:text-white">{card.valueDesc}</Text>
+                  <Metric className="text-black text-2xl">{card.value}</Metric>
+                  <Text className="mt-2 truncate text-gray-500">{card.valueDesc}</Text>
                 </Flex>
               </div>
           ))}
         </Flex>
         <div className="flex flex-col gap-16">
           <AreaChart
-              className="hidden h-72 sm:block"
+              className="hidden h-80 sm:block"
               data={chartData}
               index="date"
               categories={['Requests', 'Page Views', 'Unique Visitors']}
-              colors={["blue", "cyan", "violet"]}
-              yAxisWidth={35}
-              showLegend={false}
-          />
-          </div>
-          <AreaChart
-              categories={['Requests', 'Page Views', 'Unique Visitors']}
-              data={chartData}
-              index="date"
+              colors={["blue", "teal", "violet"]}
               showGridLines={false}
               showYAxis={false}
+              showLegend={false}
+              showAnimation={true}
           />
-
-          {/*<TextDataSource>Cloudflare | Generated at {generatedAt}</TextDataSource>*/}
+          </div>
         </div>
-        )
-        }
+  )
+}
