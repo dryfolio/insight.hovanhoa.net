@@ -9,9 +9,15 @@ export default function Navbar() {
                 <ul className="flex items-center space-x-6 text-base text-slate-400 cursor-pointer">
                     <Link
                         className="hover:text-slate-900 transition duration-300 ease-in-out"
-                        href="https://hovanhoa.net"
+                        href="/"
                     >
                         Home
+                    </Link>
+                    <Link
+                        className="hover:text-slate-900 transition duration-300 ease-in-out"
+                        href="/insight"
+                    >
+                        Insight
                     </Link>
                     <Link
                         className="hover:text-slate-900 transition duration-300 ease-in-out"
