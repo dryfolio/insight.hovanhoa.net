@@ -65,7 +65,7 @@ export async function Cloudflare() {
               colors={["blue", "teal", "violet"]}
               showGridLines={false}
               showYAxis={false}
-              showLegend={false}
+              showLegend={true}
               showAnimation={true}
           />
           </div>
