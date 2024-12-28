@@ -55,7 +55,7 @@ export async function Cloudflare() {
 
   return (
       <div className="w-1/2 mt-15 mx-auto">
-        <Flex className="mb-10">
+        <Flex className="mb-5">
           {cards.map((card) => (
               <div key={card.title}>
                 <Text className="text-gray-500 text-sm">{card.title}</Text>
