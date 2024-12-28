@@ -56,7 +56,6 @@ export async function Cloudflare() {
               </div>
           ))}
         </Flex>
-        <div className="flex flex-col gap-16">
           <AreaChart
               className="hidden h-80 sm:block"
               data={chartData}
@@ -65,10 +64,9 @@ export async function Cloudflare() {
               colors={["blue", "teal", "violet"]}
               showGridLines={false}
               showYAxis={false}
-              showLegend={true}
+              showLegend={false}
               showAnimation={true}
           />
-          </div>
         </div>
   )
 }
