@@ -1,5 +1,5 @@
 import { AreaChart, Flex, Metric, Text } from '@tremor/react'
-import {CloudflareAnalyticsByDate} from "../../../packages/interface/cloudflare";
+import {CloudflareAnalyticsByDate} from "../../packages/interface/cloudflare";
 import {CloudflareGraph} from "@/lib/cloudflare";
 
 

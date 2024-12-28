@@ -1,41 +1,33 @@
-import Hero from '@/components/hero'
 import Navbar from '@/components/nav'
-import PostTile from '@/components/post-tile'
-import { type PostExcerpt } from '@/lib/types'
-import Link from 'next/link'
 import { Footer } from '@/components/footer'
-import { unstable_noStore as noStore } from 'next/cache'
-import { HashNode } from '@/lib/hashnode'
+import { Suspense } from 'react'
+import { Cloudflare } from './cloudflare'
+import { SkeletonCard } from '../components/skeleton-card'
+import {CloudflareGraph} from "@/lib/cloudflare";
 
-export default async function Home() {
-    noStore()
-    const posts = await HashNode.getArticles({
-        page: 1,
-        pageSize: 20,
-    })
 
-    const postsArr = posts?.data?.publication?.postsViaPage?.nodes
+export const metadata = {
+    title: 'insight',
+    description: 'Blog Insight from Cloudflare.',
+}
+
+export const revalidate = 86400
+
+
+export default async function Insight() {
 
     return (
         <main className="min-h-screen relative">
             <div className="py-8 md:py-12 pb-0 px-4 sm:px-6 lg:pl-52 mb-8 md:mb-0">
                 <Navbar />
             </div>
-            <Hero />
-            <section className="relative mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 overflow-hidden mb-30">
-                {postsArr?.map((post: PostExcerpt) => (
-                    <Link
-                        href={`/${post.slug}`}
-                        prefetch={false}
-                        key={post.id}
-                    >
-                        <PostTile key={post.id} post={post} />
-                    </Link>
-                ))}
-            </section>
+            <Suspense fallback={<SkeletonCard />}>
+                <Cloudflare />
+            </Suspense>
             <div className="py-8 md:py-12 pb-0 px-4 sm:px-6 lg:pl-52 mb-8 md:mb-0">
                 <Footer />
             </div>
         </main>
     )
 }
+

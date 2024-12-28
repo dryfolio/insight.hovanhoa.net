@@ -7,7 +7,7 @@ export default function NotFound() {
             <div>
                 <h1 className="text-7xl font-black text-slate-900">404</h1>
             </div>
-            <Link href="/" className="text-sky-600">
+            <Link href="https://hovanhoa.net" className="text-sky-600">
                 <button>Go Back Home</button>
             </Link>
         </div>
