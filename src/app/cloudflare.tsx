@@ -14,6 +14,20 @@ async function dataFormatter(number: number) {
   return Intl.NumberFormat('us').format(number).toString()
 }
 
+const formatShortenedDate = (isoString: string): string => {
+  const date = new Date(isoString);
+
+  // Format the date and time in a shortened style
+  return date.toLocaleString('en-US', {
+    month: 'short', // Short month name (e.g., "Dec")
+    day: 'numeric', // Numeric day (e.g., "28")
+    year: 'numeric', // Full year (e.g., "2024")
+    hour: '2-digit', // Hour in 12-hour format (e.g., "3 PM")
+    minute: '2-digit', // Minute (e.g., "29")
+    hour12: true, // 12-hour clock
+  });
+};
+
 export async function Cloudflare() {
   const { data, generatedAt, totalRequests, totalPageviews } = await CloudflareGraph.GetStatistic()
 
@@ -56,17 +70,20 @@ export async function Cloudflare() {
               </div>
           ))}
         </Flex>
-          <AreaChart
-              className="hidden h-80 sm:block"
-              data={chartData}
-              index="date"
-              categories={['Requests', 'Page Views', 'Unique Visitors']}
-              colors={["blue", "teal", "violet"]}
-              showGridLines={false}
-              showYAxis={false}
-              showLegend={true}
-              showAnimation={true}
-          />
+        <AreaChart
+            className="hidden h-80 sm:block"
+            data={chartData}
+            index="date"
+            categories={['Requests', 'Page Views', 'Unique Visitors']}
+            colors={["blue", "teal", "violet"]}
+            showGridLines={false}
+            showYAxis={false}
+            showLegend={true}
+            showAnimation={true}
+        />
+        <div className="mt-5 text-right text-xs italic text-gray-400">
+          Source: Cloudflare | Generated at {formatShortenedDate(generatedAt)}
         </div>
+      </div>
   )
 }
