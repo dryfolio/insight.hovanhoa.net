@@ -71,7 +71,7 @@ export async function Cloudflare() {
           ))}
         </Flex>
         <AreaChart
-            className="hidden h-80 sm:block"
+            className="h-80"
             data={chartData}
             index="date"
             categories={['Requests', 'Page Views', 'Unique Visitors']}
