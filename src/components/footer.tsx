@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import React from 'react'
+import { BASE_URL } from '@/constants'
 
 export function Footer() {
     return (
@@ -9,7 +10,7 @@ export function Footer() {
                     <p className="hover:text-slate-900 transition duration-300 ease-in-out">
                         © 2024{' '}
                         <Link
-                            href={'https://hovanhoa.net'}
+                            href={BASE_URL}
                             target="_self"
                             className="text-sky-600"
                         >

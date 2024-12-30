@@ -2,6 +2,7 @@ import Link from 'next/link'
 
 const NAME = 'hovanhoa'
 const BASE_URL = 'https://hovanhoa.net'
+const INSIGHT_URL = 'https://insight.hovanhoa.net'
 const TWITTER = '_hovanhoa_'
 const LINKEDIN = 'hovanhoa'
 const GITHUB = 'hovanhoa'
@@ -20,11 +21,11 @@ const DESCRIPTION = (
         <br />
         <br />
         Tech stacks:{' '}
-        <Link href={'https://go.dev/'} target="_blank" className="text-sky-600">
+        <Link href={'https://github.com/hovanhoa?tab=repositories&language=go'} target="_blank" className="text-sky-600">
             Golang
         </Link>{' '}
         <Link
-            href={'https://www.python.org/'}
+            href={'https://github.com/hovanhoa?tab=repositories&language=python'}
             target="_blank"
             className="text-sky-600"
         >
@@ -58,7 +59,8 @@ const DESCRIPTION = (
         >
             GCP
         </Link>
-        <br /> <br />
+        <br />
+        <br />
     </>
 )
 
@@ -73,5 +75,6 @@ export {
     HASHNODE_API,
     OG_IMAGE_BG,
     BASE_URL,
+    INSIGHT_URL,
     ROLE,
 }

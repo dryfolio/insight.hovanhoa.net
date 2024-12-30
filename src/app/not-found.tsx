@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import React from 'react'
+import { BASE_URL } from '@/constants'
 
 export default function NotFound() {
     return (
@@ -7,7 +8,7 @@ export default function NotFound() {
             <div>
                 <h1 className="text-7xl font-black text-slate-900">404</h1>
             </div>
-            <Link href="https://hovanhoa.net" className="text-sky-600">
+            <Link href={BASE_URL} className="text-sky-600">
                 <button>Go Back Home</button>
             </Link>
         </div>

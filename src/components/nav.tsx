@@ -1,4 +1,4 @@
-import { GITHUB, LINKEDIN } from '@/constants'
+import { INSIGHT_URL, GITHUB, LINKEDIN, BASE_URL } from '@/constants'
 import Link from 'next/link'
 import React from 'react'
 
@@ -9,13 +9,13 @@ export default function Navbar() {
                 <ul className="flex items-center space-x-6 text-base text-slate-400 cursor-pointer">
                     <Link
                         className="hover:text-slate-900 transition duration-300 ease-in-out"
-                        href="https://hovanhoa.net"
+                        href={BASE_URL}
                     >
                         Home
                     </Link>
                     <Link
                         className="hover:text-slate-900 transition duration-300 ease-in-out"
-                        href="https://insight.hovanhoa.net"
+                        href={INSIGHT_URL}
                     >
                         Insight
                     </Link>
