@@ -1,4 +1,4 @@
-import { INSIGHT_URL, GITHUB, LINKEDIN, BASE_URL } from '@/constants'
+import { INSIGHT_URL, BASE_URL, GALLERY_URL } from '@/constants'
 import Link from 'next/link'
 import React from 'react'
 
@@ -21,17 +21,9 @@ export default function Navbar() {
                     </Link>
                     <Link
                         className="hover:text-slate-900 transition duration-300 ease-in-out"
-                        target="_blank"
-                        href={`https://github.com/${GITHUB}`}
+                        href={GALLERY_URL}
                     >
-                        GitHub
-                    </Link>
-                    <Link
-                        className="hover:text-slate-900 transition duration-300 ease-in-out"
-                        target="_blank"
-                        href={`https://www.linkedin.com/in/${LINKEDIN}`}
-                    >
-                        Linkedin
+                        Gallery
                     </Link>
                 </ul>
             </nav>
