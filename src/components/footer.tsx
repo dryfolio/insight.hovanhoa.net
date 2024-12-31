@@ -8,7 +8,7 @@ export function Footer() {
             <nav className="relative mx-auto max-w-xl mt-40">
                 <ul className="flex items-center space-x-6 text-slate-900">
                     <p className="hover:text-slate-900 transition duration-300 ease-in-out">
-                        © 2024{' '}
+                        © 2025{' '}
                         <Link
                             href={BASE_URL}
                             target="_self"
