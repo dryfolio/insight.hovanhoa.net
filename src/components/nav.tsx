@@ -6,21 +6,21 @@ export default function Navbar() {
     return (
         <header>
             <nav className="relative mx-auto max-w-xl">
-                <ul className="flex items-center space-x-6 text-base text-slate-400 cursor-pointer">
+                <ul className="flex items-center space-x-6 text-base text-black cursor-pointer">
                     <Link
-                        className="hover:text-slate-900 transition duration-300 ease-in-out"
+                        className="hover:text-slate-400 transition duration-300 ease-in-out"
                         href={BASE_URL}
                     >
                         Home
                     </Link>
                     <Link
-                        className="hover:text-slate-900 transition duration-300 ease-in-out"
+                        className="hover:text-slate-400 transition duration-300 ease-in-out"
                         href={INSIGHT_URL}
                     >
                         Insight
                     </Link>
                     <Link
-                        className="hover:text-slate-900 transition duration-300 ease-in-out"
+                        className="hover:text-slate-400 transition duration-300 ease-in-out"
                         href={GALLERY_URL}
                     >
                         Gallery
