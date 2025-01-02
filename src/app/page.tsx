@@ -7,6 +7,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { BASE_URL, IMAGE, NAME } from '@/constants'
 import {CloudflareGraph} from "@/lib/cloudflare";
+import Wakatime from '@/app/wakatime'
 
 
 export const metadata = {
@@ -36,6 +37,9 @@ export default async function Insight() {
                 <div className="mt-20">
                     <Suspense fallback={<SkeletonCard />}>
                         <Cloudflare />
+                    </Suspense>
+                    <Suspense fallback={<SkeletonCard />}>
+                        <Wakatime />
                     </Suspense>
                 </div>
                 <div className="py-8 md:py-12 pb-0 px-4 sm:px-6 lg:pl-52 mb-8 md:mb-0">
