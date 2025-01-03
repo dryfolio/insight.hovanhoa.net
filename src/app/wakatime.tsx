@@ -1,5 +1,4 @@
-"use client";
-import { BarChart, BarList, DonutChart, Legend } from '@tremor/react'
+import { BarChart, BarList, DonutChart, Legend } from '@/components/Tremor'
 import { cn } from '@/lib/utils'
 import Image from 'next/image'
 import { StaticCard } from '@/components/static-card'
