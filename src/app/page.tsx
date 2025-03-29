@@ -24,13 +24,15 @@ export default async function Insight() {
             <section className="relative mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 overflow-hidden">
                 <div className="items-center flex justify-between mb-6">
                     <Link href={BASE_URL}>
-                        <Image
-                            src={IMAGE}
-                            alt={NAME}
-                            className="h-12 w-12 rounded-full"
-                            height={100}
-                            width={100}
-                        />
+                        <div className="border border-slate-200 p-1 rounded-full">
+                            <Image
+                                src={IMAGE}
+                                alt={NAME}
+                                className="h-12 w-12 rounded-full"
+                                height={100}
+                                width={100}
+                            />
+                        </div>
                     </Link>
                     <Navbar />
                 </div>
