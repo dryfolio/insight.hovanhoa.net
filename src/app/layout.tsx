@@ -3,6 +3,7 @@ import { Inter } from 'next/font/google'
 import './globals.css'
 import { BASE_URL, NAME } from '@/constants'
 import { Analytics } from '@vercel/analytics/react'
+import ScrollToTop from '@/components/scroll-to-top'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -45,7 +46,10 @@ export default function RootLayout({
 }) {
     return (
         <html lang="en" className="scroll-smooth">
-            <body className={inter.className}>{children}</body>
+            <body className={inter.className}>
+                {children}
+                <ScrollToTop />
+            </body>
             <Analytics />
         </html>
     )

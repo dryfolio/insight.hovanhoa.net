@@ -5,7 +5,19 @@
     <loc>https://hovanhoa.net</loc>
     <changefreq>always</changefreq>
     <priority>1</priority>
-    <lastmod>2024-12-28T10:27:54.915Z</lastmod>
+    <lastmod>2025-03-29T10:38:23.407Z</lastmod>
+  </url>
+  <url>
+    <loc>https://hovanhoa.net/load-testing-with-k6</loc>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
+    <lastmod>2025-02-18T03:52:13.786Z</lastmod>
+  </url>
+  <url>
+    <loc>https://hovanhoa.net/looking-back-on-2024</loc>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
+    <lastmod>2025-01-16T17:00:00.000Z</lastmod>
   </url>
   <url>
     <loc>https://hovanhoa.net/live-reloading-in-go</loc>
