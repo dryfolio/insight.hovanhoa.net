@@ -4,7 +4,6 @@ const NAME = 'hovanhoa'
 const BASE_URL = 'https://hovanhoa.net'
 const INSIGHT_URL = 'https://insight.hovanhoa.net'
 const GALLERY_URL = 'https://gallery.hovanhoa.net'
-const STATUS_URL = 'https://status.hovanhoa.net'
 const TWITTER = '_hovanhoa_'
 const LINKEDIN = 'hovanhoa'
 const GITHUB = 'hovanhoa'
@@ -79,6 +78,5 @@ export {
     BASE_URL,
     INSIGHT_URL,
     GALLERY_URL,
-    STATUS_URL,
     ROLE,
 }
