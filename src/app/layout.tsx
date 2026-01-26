@@ -1,24 +1,51 @@
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import './globals.css'
-import { BASE_URL, NAME } from '@/constants'
+import { BASE_URL, NAME, IMAGE, TWITTER, ROLE } from '@/constants'
 import { Analytics } from '@vercel/analytics/react'
 import ScrollToTop from '@/components/scroll-to-top'
 
 const inter = Inter({ subsets: ['latin'] })
+const FULL_NAME = 'Hồ Văn Hòa'
+const INSIGHT_URL = 'https://insight.hovanhoa.net'
 
 export const metadata: Metadata = {
-    metadataBase: new URL(BASE_URL),
+    metadataBase: new URL(INSIGHT_URL),
     title: {
-        default: NAME,
+        default: `${NAME} | insight`,
         template: `%s | ${NAME}`,
     },
-    description: 'Software Engineer.',
+    description: `${FULL_NAME} - ${ROLE}. Blog insights and analytics from Cloudflare.`,
+    keywords: [
+        FULL_NAME,
+        'Hồ Văn Hòa',
+        NAME,
+        'hovanhoa',
+        ROLE,
+        'Software Engineer',
+        'Developer',
+        'Blog',
+        'Tech Blog',
+        'Vietnam Developer',
+        'Cloudflare',
+        'Insight',
+        'Analytics',
+        'Blog Analytics',
+    ],
+    authors: [{ name: FULL_NAME }],
     openGraph: {
-        title: NAME,
-        description: 'Software Engineer.',
-        url: BASE_URL,
+        title: `${NAME} | insight`,
+        description: `${FULL_NAME} - ${ROLE}. Blog insights and analytics from Cloudflare.`,
+        url: INSIGHT_URL,
         siteName: NAME,
+        images: [
+            {
+                url: IMAGE,
+                width: 800,
+                height: 600,
+                alt: FULL_NAME,
+            },
+        ],
         locale: 'en_US',
         type: 'website',
     },
@@ -34,8 +61,14 @@ export const metadata: Metadata = {
         },
     },
     twitter: {
-        title: NAME,
         card: 'summary_large_image',
+        title: `${NAME} | insight`,
+        description: `${FULL_NAME} - ${ROLE}. Blog insights and analytics.`,
+        creator: `@${TWITTER}`,
+        images: [IMAGE],
+    },
+    alternates: {
+        canonical: INSIGHT_URL,
     },
 }
 
