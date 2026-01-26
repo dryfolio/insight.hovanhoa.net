@@ -1,12 +1,15 @@
-import { BASE_URL } from "@/constants";
+import { BASE_URL, INSIGHT_URL } from "@/constants";
+import { MetadataRoute } from 'next'
 
-export default function robots() {
+export default function robots(): MetadataRoute.Robots {
   return {
     rules: [
       {
         userAgent: "*",
+        allow: "/",
       },
     ],
-    host: BASE_URL,
+    sitemap: `${INSIGHT_URL}/sitemap.xml`,
+    host: INSIGHT_URL,
   };
 }
