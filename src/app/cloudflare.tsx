@@ -54,24 +54,24 @@ export async function Cloudflare() {
   ]
 
   return (
-      <div className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
-        <Flex className="mb-5">
+      <div className="rounded-xl border border-slate-200 bg-white p-4 sm:p-6 shadow-sm">
+        <Flex className="mb-5 flex-col sm:flex-row gap-4 sm:gap-0">
           {cards.map((card) => (
-              <div key={card.title}>
-                <Text className="text-gray-500 text-sm">{card.title}</Text>
+              <div key={card.title} className="w-full sm:w-auto">
+                <Text className="text-gray-500 text-xs sm:text-sm">{card.title}</Text>
                 <Flex
                     alignItems="baseline"
-                    className="space-x-3"
+                    className="space-x-2 sm:space-x-3"
                     justifyContent="start"
                 >
-                  <Metric className="text-black text-2xl">{card.value}</Metric>
-                  <Text className="mt-2 truncate text-gray-500">{card.valueDesc}</Text>
+                  <Metric className="text-black text-xl sm:text-2xl md:text-3xl">{card.value}</Metric>
+                  <Text className="mt-2 truncate text-gray-500 text-xs sm:text-sm">{card.valueDesc}</Text>
                 </Flex>
               </div>
           ))}
         </Flex>
         <AreaChart
-            className="h-80"
+            className="h-64 sm:h-80"
             data={chartData}
             index="date"
             categories={['Requests', 'Page Views', 'Unique Visitors']}
@@ -81,7 +81,7 @@ export async function Cloudflare() {
             showLegend={true}
             showAnimation={true}
         />
-        <div className="mt-5 text-right text-xs italic text-gray-400">
+        <div className="mt-4 sm:mt-5 text-left sm:text-right text-xs italic text-gray-400">
           Source: Cloudflare | Generated at {formatShortenedDate(generatedAt)}
         </div>
       </div>

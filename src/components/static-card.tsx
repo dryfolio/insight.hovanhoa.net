@@ -25,11 +25,11 @@ export function StaticCard({
   return (
     <div
       className={cn(
-        'rounded-xl border border-slate-200 bg-white p-6 shadow-sm',
+        'rounded-xl border border-slate-200 bg-white p-4 sm:p-6 shadow-sm',
         className,
       )}
     >
-      {title ? <div className="mb-5 font-bold">{title}</div> : null}
+      {title ? <div className="mb-4 sm:mb-5 font-bold text-sm sm:text-base">{title}</div> : null}
 
       <div className="block flex flex-col items-stretch dark:hidden">
         <Image
@@ -39,6 +39,7 @@ export function StaticCard({
           src={url.light}
           unoptimized
           width={800}
+          className="w-full h-auto"
         />
       </div>
 
@@ -49,6 +50,7 @@ export function StaticCard({
           src={url.dark}
           unoptimized
           width={800}
+          className="w-full h-auto"
         />
       </div>
 

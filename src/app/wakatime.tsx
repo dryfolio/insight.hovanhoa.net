@@ -16,7 +16,7 @@ const WAKA_LANGUAGES_API =
     'https://wakatime.com/share/@hovanhoa/a5217728-f0aa-47b7-a4ea-fbd830e4f96b.json'
 
 const cardClasses =
-    'rounded-xl border border-slate-200 bg-white p-6 shadow-sm'
+    'rounded-xl border border-slate-200 bg-white p-4 sm:p-6 shadow-sm'
 
 export default async function Wakatime() {
     const codingActivity = await getWakaCodingActivity()
@@ -24,8 +24,8 @@ export default async function Wakatime() {
     const top10Languages = languages.slice(0, 10)
 
     return (
-        <div className="mt-10 space-y-6">
-            <div className={cn(cardClasses, 'mb-10')}>
+        <div className="mt-6 sm:mt-10 space-y-4 sm:space-y-6">
+            <div className={cn(cardClasses, 'mb-6 sm:mb-10')}>
                 <BarChart
                     categories={['Coding Hours']}
                     data={codingActivity}
@@ -34,14 +34,14 @@ export default async function Wakatime() {
                 <TextDataSource>Wakatime (Last 30 days)</TextDataSource>
             </div>
 
-            <div className={cn(cardClasses, 'mb-10')}>
-                <div className="flex flex-row flex-wrap items-center gap-10">
-                    <div className="basis-full md:basis-1/2">
-                        <div className="text-bold mb-4 flex flex-row justify-between">
-                            <span className="font-bold">
+            <div className={cn(cardClasses, 'mb-6 sm:mb-10')}>
+                <div className="flex flex-col md:flex-row flex-wrap items-center gap-6 md:gap-10">
+                    <div className="basis-full md:basis-1/2 w-full">
+                        <div className="text-bold mb-4 flex flex-row justify-between items-center gap-2">
+                            <span className="font-bold text-sm sm:text-base">
                                 Top 10 languages tracked by Wakatime
                             </span>
-                            <span className="font-bold">%</span>
+                            <span className="font-bold text-sm sm:text-base">%</span>
                         </div>
                         <BarList
                             data={top10Languages.map((language) => ({
@@ -51,10 +51,10 @@ export default async function Wakatime() {
                         />
                     </div>
 
-                    <div className="flex grow flex-col items-center">
+                    <div className="flex grow flex-col items-center w-full md:w-auto">
                         <DonutChart
                             category="percent"
-                            className="mb-10 w-44"
+                            className="mb-6 sm:mb-10 w-32 sm:w-44"
                             data={languages}
                             index="name"
                             showLabel
