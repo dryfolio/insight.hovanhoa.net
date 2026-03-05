@@ -24,7 +24,10 @@ export function StaticCard({
 }: StaticCardProps) {
   return (
     <div
-      className={cn('p-3', 'rounded dark:border-gray-800', className)}
+      className={cn(
+        'rounded-xl border border-slate-200 bg-white p-6 shadow-sm',
+        className,
+      )}
     >
       {title ? <div className="mb-5 font-bold">{title}</div> : null}
 

@@ -15,7 +15,8 @@ const WAKA_CODING_ACTIVITY_API =
 const WAKA_LANGUAGES_API =
     'https://wakatime.com/share/@hovanhoa/a5217728-f0aa-47b7-a4ea-fbd830e4f96b.json'
 
-const borderClasses = 'border rounded dark:border-gray-800'
+const cardClasses =
+    'rounded-xl border border-slate-200 bg-white p-6 shadow-sm'
 
 export default async function Wakatime() {
     const codingActivity = await getWakaCodingActivity()
@@ -24,7 +25,7 @@ export default async function Wakatime() {
 
     return (
         <div className="mt-10 space-y-6">
-            <div className="mb-10">
+            <div className={cn(cardClasses, 'mb-10')}>
                 <BarChart
                     categories={['Coding Hours']}
                     data={codingActivity}
@@ -33,7 +34,7 @@ export default async function Wakatime() {
                 <TextDataSource>Wakatime (Last 30 days)</TextDataSource>
             </div>
 
-            <div className={cn('mb-10 p-5')}>
+            <div className={cn(cardClasses, 'mb-10')}>
                 <div className="flex flex-row flex-wrap items-center gap-10">
                     <div className="basis-full md:basis-1/2">
                         <div className="text-bold mb-4 flex flex-row justify-between">
