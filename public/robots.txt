@@ -1,2 +1,4 @@
 User-agent: *
 Allow: /
+Sitemap: https://insight.hovanhoa.net/sitemap.xml
+Host: https://insight.hovanhoa.net
