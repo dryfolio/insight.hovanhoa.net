@@ -1,4 +1,5 @@
 import React from 'react'
+import Image from 'next/image'
 
 export default function ImagePreview({
     title,
@@ -9,7 +10,7 @@ export default function ImagePreview({
 }) {
     if (imageURL) {
         return (
-            <img
+            <Image
                 style={{
                     backgroundSize: 'contain',
                     backgroundRepeat: 'no-repeat',
@@ -17,6 +18,9 @@ export default function ImagePreview({
                     borderRadius: 20,
                 }}
                 src={imageURL}
+                alt={title}
+                width={1600}
+                height={900}
             />
         )
     }

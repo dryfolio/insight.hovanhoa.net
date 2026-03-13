@@ -5,7 +5,7 @@ import { StaticCard } from '@/components/static-card'
 import { TextDataSource } from '@/components/text-data-source'
 
 export const metadata = {
-    title: '@duyet Coding Insights',
+    title: '@hovanhoa Coding Insights',
     description: 'Coding Insights data collected from Wakatime.',
 }
 
