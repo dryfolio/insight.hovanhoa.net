@@ -1,0 +1,34 @@
+---
+description: Core coding standards and context for the insight.hovanhoa.net Next.js monorepo
+alwaysApply: true
+---
+
+## Tech Stack & Context
+
+- This repo is a **Next.js 14** app using the **App Router** under `src/app`.
+- All application code is written in **TypeScript** (`.ts`, `.tsx`).
+- Styling is primarily via **Tailwind CSS** and project-level design system components in `packages/ui`.
+
+## General Guidelines
+
+- Prefer **small, focused React function components**; avoid class components.
+- Keep components **presentational** when possible and move data/loading logic into hooks or lib utilities.
+- Use **TypeScript types/interfaces** for component props and external data; avoid `any`.
+- Keep shared types and UI primitives in `packages/interface` and `packages/ui` where appropriate.
+
+## Data & API Usage
+
+- When calling APIs or GraphQL endpoints, centralize clients and queries in `src/lib` (or an appropriate package) instead of in components.
+- Handle errors explicitly and surface user-friendly messages; avoid silent failures.
+
+## Styling & Layout
+
+- Use **Tailwind utility classes** for most styling, with higher-level components from `packages/ui` for repeated patterns.
+- Prefer composable layout components (e.g., shells, sections) over deeply nested ad-hoc markup.
+
+## Tooling & Workflow
+
+- Keep code formatted with `npm run format` / `npm run format-check` (Prettier).
+- Keep code passing `npm run lint` (Next.js + ESLint config in this repo).
+- When adding dependencies, prefer existing libraries already used in the project.
+
