@@ -6,6 +6,7 @@ const BASE_URL = 'https://hovanhoa.net'
 const INSIGHT_URL = 'https://insight.hovanhoa.net'
 const GALLERY_URL = 'https://gallery.hovanhoa.net'
 const STATUS_URL = 'https://status.hovanhoa.net'
+const MUSIC_URL = 'https://music.hovanhoa.net'
 const INFO_URL = 'https://info.hovanhoa.net'
 const TWITTER = '_hovanhoa_'
 const LINKEDIN = 'hovanhoa'
@@ -82,6 +83,7 @@ export {
     BASE_URL,
     INSIGHT_URL,
     GALLERY_URL,
+    MUSIC_URL,
     STATUS_URL,
     INFO_URL,
     ROLE,
