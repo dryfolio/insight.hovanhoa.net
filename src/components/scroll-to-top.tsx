@@ -1,16 +1,27 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 export default function ScrollToTop() {
     const [isVisible, setIsVisible] = useState(false)
+    const hideTimeoutRef = useRef<NodeJS.Timeout | null>(null)
 
     useEffect(() => {
         const toggleVisibility = () => {
             if (window.scrollY > 300) {
                 setIsVisible(true)
+                if (hideTimeoutRef.current) {
+                    clearTimeout(hideTimeoutRef.current)
+                }
+                hideTimeoutRef.current = setTimeout(() => {
+                    setIsVisible(false)
+                }, 1000)
             } else {
                 setIsVisible(false)
+                if (hideTimeoutRef.current) {
+                    clearTimeout(hideTimeoutRef.current)
+                    hideTimeoutRef.current = null
+                }
             }
         }
 
@@ -18,6 +29,9 @@ export default function ScrollToTop() {
 
         return () => {
             window.removeEventListener('scroll', toggleVisibility)
+            if (hideTimeoutRef.current) {
+                clearTimeout(hideTimeoutRef.current)
+            }
         }
     }, [])
 
