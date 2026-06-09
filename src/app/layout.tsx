@@ -1,11 +1,10 @@
 import type { Metadata } from 'next'
-import { Inter } from 'next/font/google'
+import { GeistSans } from 'geist/font/sans'
+import { GeistMono } from 'geist/font/mono'
 import './globals.css'
 import { BASE_URL, NAME, IMAGE, TWITTER, ROLE } from '@/constants'
 import { Analytics } from '@vercel/analytics/react'
 import ScrollToTop from '@/components/scroll-to-top'
-
-const inter = Inter({ subsets: ['latin'] })
 const FULL_NAME = 'Hồ Văn Hòa'
 const INSIGHT_URL = 'https://insight.hovanhoa.net'
 
@@ -78,8 +77,16 @@ export default function RootLayout({
     children: React.ReactNode
 }) {
     return (
-        <html lang="en" className="scroll-smooth">
-            <body className={inter.className}>
+        <html
+            lang="en"
+            className={`scroll-smooth ${GeistSans.variable} ${GeistMono.variable}`}
+        >
+            <body className={GeistSans.className}>
+                <script
+                    dangerouslySetInnerHTML={{
+                        __html: `(function(){try{var t=localStorage.getItem('theme');var d=t?t==='dark':window.matchMedia('(prefers-color-scheme:dark)').matches;if(d)document.documentElement.classList.add('dark')}catch(e){}})()`,
+                    }}
+                />
                 {children}
                 <ScrollToTop />
             </body>
