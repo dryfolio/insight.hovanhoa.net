@@ -11,13 +11,22 @@
 
 body {
   color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+  background-color: #faf9f6;
+  background-image: radial-gradient(
+    rgba(12, 12, 12, 0.05) 1px,
+    transparent 1.4px
+  );
+  background-size: 22px 22px;
+  background-attachment: fixed;
   text-transform: lowercase !important;
+}
+
+.dark body {
+  background-color: #0a0a0a;
+  background-image: radial-gradient(
+    rgba(255, 255, 255, 0.05) 1px,
+    transparent 1.4px
+  );
 }
 
 /*main feed*/
@@ -39,4 +48,183 @@ body {
 
 .document {
   @apply max-w-none prose-h3:mb-4 prose-h3:text-base prose-h3:leading-6 prose-sm prose prose-pre:text-base prose-slate prose-a:font-semibold prose-a:text-primary hover:prose-a:text-sky-600;
+}
+
+/* ============================================================
+   Editorial redesign — additive design-token layer.
+   Ported from monorepo/packages/components/styles.css (the
+   2026 "rd-*" system). Neutral canvas + single orange accent,
+   Geist sans/mono. Light-mode default; .dark tokens included
+   but no toggle is wired.
+   ============================================================ */
+:root {
+  /* neutrals (light) */
+  --rd-bg: #ffffff;
+  --rd-bg-sub: #fafafa;
+  --rd-surface: #ffffff;
+  --rd-surface-2: #f6f6f5;
+  --rd-border: #e8e8e6;
+  --rd-border-2: #dededc;
+  --rd-line: #ededeb;
+  --rd-text: #0c0c0c;
+  --rd-text-2: #54534f;
+  --rd-text-3: #8c8b85;
+  --rd-text-4: #b6b5ae;
+
+  /* accent (orange) */
+  --rd-accent: #d8602f;
+  --rd-accent-ink: #b54a1f;
+  --rd-accent-bg: #fbeee7;
+
+  /* status */
+  --rd-ok: #1f8a5b;
+  --rd-warn: #c98a16;
+  --rd-down: #d23b3b;
+
+  /* shape */
+  --rd-r-sm: 7px;
+  --rd-r: 11px;
+  --rd-r-lg: 16px;
+
+  /* layout */
+  --rd-maxw: 1180px;
+  --rd-pad: clamp(20px, 5vw, 56px);
+
+  /* fonts — mapped to Geist via next/font in layout.tsx */
+  --font-sans: var(--font-geist-sans), 'Inter', ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, 'SFMono-Regular', Menlo, monospace;
+}
+
+.dark {
+  --rd-bg: #0a0a0a;
+  --rd-bg-sub: #0e0e0e;
+  --rd-surface: #111111;
+  --rd-surface-2: #161616;
+  --rd-border: #242424;
+  --rd-border-2: #2e2e2e;
+  --rd-line: #1d1d1d;
+  --rd-text: #f4f3f1;
+  --rd-text-2: #a7a6a1;
+  --rd-text-3: #74736e;
+  --rd-text-4: #4a4a47;
+  --rd-accent: #f0743f;
+  --rd-accent-ink: #f59568;
+  --rd-accent-bg: #2a1810;
+  --rd-ok: #43c089;
+  --rd-warn: #e0a93a;
+  --rd-down: #f06464;
+}
+
+/* ---------- typography ---------- */
+.rd-eyebrow {
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--rd-text-3);
+  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  white-space: nowrap;
+}
+.rd-eyebrow .rd-num {
+  color: var(--rd-accent);
+}
+
+.rd-h-sec {
+  font-size: clamp(1.7rem, 3vw, 2.3rem);
+  letter-spacing: -0.035em;
+  font-weight: 600;
+}
+
+.rd-lead {
+  font-size: clamp(1.05rem, 1.5vw, 1.28rem);
+  color: var(--rd-text-2);
+  line-height: 1.6;
+  max-width: 46ch;
+  text-wrap: pretty;
+}
+
+.rd-ulink {
+  color: var(--rd-text);
+  border-bottom: 1.5px solid var(--rd-border-2);
+  transition:
+    border-color 0.18s,
+    color 0.18s;
+  font-weight: 500;
+}
+.rd-ulink:hover {
+  border-color: var(--rd-accent);
+  color: var(--rd-accent-ink);
+}
+
+/* ---------- cards / chips ---------- */
+.rd-card {
+  border: 1px solid var(--rd-border);
+  border-radius: var(--rd-r);
+  background: var(--rd-surface);
+  transition:
+    border-color 0.18s,
+    transform 0.18s,
+    background 0.18s;
+}
+
+.rd-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  font-size: 12.5px;
+  padding: 0.25rem 0.625rem;
+  border: 1px solid var(--rd-border);
+  border-radius: 9999px;
+  color: var(--rd-text-2);
+  background: var(--rd-surface);
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+/* ---------- data viz helpers ---------- */
+.rd-meter {
+  height: 0.375rem;
+  border-radius: 9999px;
+  background: var(--rd-surface-2);
+  overflow: hidden;
+}
+.rd-meter > i {
+  display: block;
+  height: 100%;
+  background: var(--rd-accent);
+  border-radius: 9999px;
+}
+.rd-unit {
+  font-size: 0.42em;
+  color: var(--rd-text-3);
+  font-weight: 500;
+  letter-spacing: normal;
+  margin-left: 0.25rem;
+}
+
+/* ---------- grids ---------- */
+.rd-g2 {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.75rem;
+}
+.rd-g4 {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.75rem;
+}
+
+@media (max-width: 860px) {
+  .rd-g4 {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+@media (max-width: 560px) {
+  .rd-g2,
+  .rd-g4 {
+    grid-template-columns: 1fr;
+  }
 }
