@@ -28,7 +28,7 @@ export function KpiTile({ t }: { t: KpiTileData }) {
                     {t.trend}
                 </span>
             </div>
-            <div className="text-[clamp(2rem,4vw,2.9rem)] font-semibold leading-none tracking-[-0.04em]">
+            <div className="text-[clamp(2rem,4vw,2.9rem)] font-semibold leading-none tracking-[-0.04em] text-[var(--rd-text)]">
                 {t.v}
                 <span className="rd-unit">{t.unit}</span>
             </div>

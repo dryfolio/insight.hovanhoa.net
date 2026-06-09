@@ -189,7 +189,7 @@ export default async function Insight() {
             >
                 <div className="mx-auto max-w-[var(--rd-maxw)] px-[var(--rd-pad)] pb-12 pt-12">
                     <Eyebrow>hovanhoa · insight</Eyebrow>
-                    <h1 className="mt-[18px] max-w-[20ch] text-[clamp(2rem,4.6vw,3.4rem)] font-semibold tracking-[-0.04em]">
+                    <h1 className="mt-[18px] max-w-[20ch] text-[clamp(2rem,4.6vw,3.4rem)] font-semibold tracking-[-0.04em] text-[var(--rd-text)]">
                         My month in code and clicks.
                     </h1>
                     <p className="rd-lead mt-5">
@@ -221,7 +221,7 @@ export default async function Insight() {
                 {/* ---- editorial note ---- */}
                 <div className="rd-card mt-3 bg-[var(--rd-bg-sub)] p-[clamp(24px,3vw,34px)]">
                     <Eyebrow>The short version</Eyebrow>
-                    <p className="mt-[14px] max-w-[58ch] text-[clamp(1.1rem,1.8vw,1.45rem)] leading-[1.45] tracking-[-0.015em]">
+                    <p className="mt-[14px] max-w-[58ch] text-[clamp(1.1rem,1.8vw,1.45rem)] leading-[1.45] tracking-[-0.015em] text-[var(--rd-text)]">
                         {editorialNote}
                     </p>
                 </div>
