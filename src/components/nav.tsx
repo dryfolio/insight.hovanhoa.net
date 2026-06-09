@@ -130,7 +130,7 @@ export default function Navbar() {
                         className="inline-flex items-center gap-1.5 rounded-full bg-[var(--rd-accent-bg)] px-3 py-1.5 font-[family-name:var(--font-mono)] text-[13px] font-semibold text-[var(--rd-accent-ink)] transition-opacity hover:opacity-80"
                     >
                         <span className="text-[var(--rd-accent)]">/</span>
-                        {CURRENT}
+                        <span className="min-w-[7ch] text-center">{CURRENT}</span>
                         <Caret />
                     </button>
                     {open && (

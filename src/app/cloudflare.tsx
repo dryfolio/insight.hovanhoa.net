@@ -53,7 +53,7 @@ export function CloudflareChart({ data }: { data: CloudflareData }) {
             <div className="mb-5 flex items-end justify-between gap-4">
                 <div>
                     <Eyebrow>Traffic · Cloudflare</Eyebrow>
-                    <h3 className="mt-2.5 text-[1.35rem] tracking-[-0.03em]">
+                    <h3 className="mt-2.5 text-[1.35rem] tracking-[-0.03em] text-[var(--rd-text)]">
                         Who stopped by
                     </h3>
                 </div>

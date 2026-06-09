@@ -60,7 +60,7 @@ export function CodingHoursChart({ data }: { data: WakaActivityPoint[] }) {
             <div className="mb-5 flex items-end justify-between gap-4">
                 <div>
                     <Eyebrow>Coding · WakaTime</Eyebrow>
-                    <h3 className="mt-2.5 text-[1.35rem] tracking-[-0.03em]">
+                    <h3 className="mt-2.5 text-[1.35rem] tracking-[-0.03em] text-[var(--rd-text)]">
                         Hours per day
                     </h3>
                 </div>
@@ -91,7 +91,7 @@ export function LanguageDist({ languages }: { languages: WakaLanguage[] }) {
             <div className="mb-5 flex items-end justify-between gap-4">
                 <div>
                     <Eyebrow>Languages · WakaTime</Eyebrow>
-                    <h3 className="mt-2.5 text-[1.35rem] tracking-[-0.03em]">
+                    <h3 className="mt-2.5 text-[1.35rem] tracking-[-0.03em] text-[var(--rd-text)]">
                         What I wrote in
                     </h3>
                 </div>
@@ -110,7 +110,7 @@ export function CodingCalendar() {
             <div className="mb-5 flex items-end justify-between gap-4">
                 <div>
                     <Eyebrow>Activity · WakaTime</Eyebrow>
-                    <h3 className="mt-2.5 text-[1.35rem] tracking-[-0.03em]">
+                    <h3 className="mt-2.5 text-[1.35rem] tracking-[-0.03em] text-[var(--rd-text)]">
                         Coding activity calendar
                     </h3>
                 </div>
