@@ -41,8 +41,11 @@ function ThemeToggle() {
         const next = !dark
         setDark(next)
         document.documentElement.classList.toggle('dark', next)
+        const v = next ? 'dark' : 'light'
         try {
-            localStorage.setItem('theme', next ? 'dark' : 'light')
+            // shared across every *.hovanhoa.net subdomain
+            document.cookie = `theme=${v}; path=/; max-age=31536000; samesite=lax`
+            document.cookie = `theme=${v}; path=/; max-age=31536000; samesite=lax; domain=.hovanhoa.net`
         } catch {}
     }
 
