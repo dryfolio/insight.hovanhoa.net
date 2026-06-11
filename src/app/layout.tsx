@@ -4,7 +4,6 @@ import { GeistMono } from 'geist/font/mono'
 import './globals.css'
 import { BASE_URL, NAME, IMAGE, TWITTER, ROLE } from '@/constants'
 import { Analytics } from '@vercel/analytics/react'
-import ScrollToTop from '@/components/scroll-to-top'
 const FULL_NAME = 'Hồ Văn Hòa'
 const INSIGHT_URL = 'https://insight.hovanhoa.net'
 
@@ -88,7 +87,6 @@ export default function RootLayout({
                     }}
                 />
                 {children}
-                <ScrollToTop />
             </body>
             <Analytics />
         </html>
