@@ -2,18 +2,141 @@
 
 import Image from 'next/image'
 import { useEffect, useRef, useState } from 'react'
+import {
+    RiBookOpenLine,
+    RiGithubFill,
+    RiHome5Line,
+    RiImageLine,
+    RiLinksLine,
+    RiLinkedinBoxFill,
+    RiMusic2Line,
+    RiPulseLine,
+    RiServerLine,
+    RiTwitterXFill,
+    type RemixiconComponentType,
+} from '@remixicon/react'
+import {
+    BASE_URL,
+    GALLERY_URL,
+    GITHUB,
+    INFO_URL,
+    INSIGHT_URL,
+    LINKEDIN,
+    MUSIC_URL,
+    STATUS_URL,
+    TWITTER,
+} from '@/constants'
 
 const CURRENT = 'insight'
 
-const APPS = [
-    { label: 'home', href: 'https://hovanhoa.net' },
-    { label: 'insight', href: 'https://insight.hovanhoa.net' },
-    { label: 'gallery', href: 'https://gallery.hovanhoa.net' },
-    { label: 'music', href: 'https://music.hovanhoa.net' },
-    { label: 'status', href: 'https://status.hovanhoa.net' },
+type Item = {
+    label: string
+    desc: string
+    href: string
+    icon: RemixiconComponentType
+    external?: boolean
+}
+type Column = { title: string; items: Item[] }
+
+// Every destination here is real — sourced from src/constants (site config).
+const COLUMNS: Column[] = [
+    {
+        title: 'this site',
+        items: [
+            {
+                label: 'home',
+                desc: 'profile & writing',
+                href: BASE_URL,
+                icon: RiHome5Line,
+            },
+            {
+                label: 'blog',
+                desc: 'notes & posts',
+                href: `${BASE_URL}/#blog`,
+                icon: RiBookOpenLine,
+            },
+        ],
+    },
+    {
+        title: 'the family',
+        items: [
+            {
+                label: 'insight',
+                desc: 'coding activity',
+                href: INSIGHT_URL,
+                icon: RiPulseLine,
+                external: true,
+            },
+            {
+                label: 'gallery',
+                desc: 'photography',
+                href: GALLERY_URL,
+                icon: RiImageLine,
+                external: true,
+            },
+            {
+                label: 'music',
+                desc: "what's on repeat",
+                href: MUSIC_URL,
+                icon: RiMusic2Line,
+                external: true,
+            },
+            {
+                label: 'status',
+                desc: 'service uptime',
+                href: STATUS_URL,
+                icon: RiServerLine,
+                external: true,
+            },
+            {
+                label: 'info',
+                desc: 'links & bio',
+                href: INFO_URL,
+                icon: RiLinksLine,
+                external: true,
+            },
+        ],
+    },
+    {
+        title: 'connect',
+        items: [
+            {
+                label: 'github',
+                desc: `@${GITHUB}`,
+                href: `https://github.com/${GITHUB}`,
+                icon: RiGithubFill,
+                external: true,
+            },
+            {
+                label: 'twitter',
+                desc: `@${TWITTER}`,
+                href: `https://twitter.com/${TWITTER}`,
+                icon: RiTwitterXFill,
+                external: true,
+            },
+            {
+                label: 'linkedin',
+                desc: `in/${LINKEDIN}`,
+                href: `https://linkedin.com/in/${LINKEDIN}`,
+                icon: RiLinkedinBoxFill,
+                external: true,
+            },
+        ],
+    },
 ]
 
-function Caret() {
+// dev-native extras pinned to the footer (both routes exist)
+const FOOTER_LINKS = [
+    { label: 'llms.txt', href: `${BASE_URL}/llms.txt` },
+    { label: 'sitemap', href: `${BASE_URL}/sitemap.xml` },
+]
+
+// the trigger icon mirrors the page you're on
+const CurrentIcon =
+    COLUMNS.flatMap((c) => c.items).find((it) => it.label === CURRENT)?.icon ??
+    RiHome5Line
+
+function Caret({ open }: { open?: boolean }) {
     return (
         <svg
             width="11"
@@ -24,6 +147,9 @@ function Caret() {
             strokeWidth="2.4"
             strokeLinecap="round"
             strokeLinejoin="round"
+            className={`transition-transform duration-200 ${
+                open ? '-rotate-180' : ''
+            }`}
         >
             <path d="m6 9 6 6 6-6" />
         </svg>
@@ -54,7 +180,8 @@ function ThemeToggle() {
             type="button"
             onClick={toggle}
             aria-label="Toggle dark mode"
-            className="inline-flex h-9 w-9 items-center justify-center rounded-lg text-[var(--rd-text-3)] transition-colors hover:bg-[var(--rd-surface-2)] hover:text-[var(--rd-text)]"
+            aria-pressed={dark}
+            className="-m-1 inline-flex h-11 w-11 items-center justify-center rounded-lg text-[var(--rd-text-3)] transition-colors hover:bg-[var(--rd-surface-2)] hover:text-[var(--rd-text)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--rd-accent)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--rd-bg-sub)]"
         >
             {dark ? (
                 <svg
@@ -90,7 +217,8 @@ function ThemeToggle() {
 
 export default function Navbar() {
     const [open, setOpen] = useState(false)
-    const ref = useRef<HTMLDivElement>(null)
+    const ref = useRef<HTMLElement>(null)
+    const btnRef = useRef<HTMLButtonElement>(null)
 
     useEffect(() => {
         const onClick = (e: MouseEvent) => {
@@ -98,21 +226,34 @@ export default function Navbar() {
                 setOpen(false)
             }
         }
+        const onKey = (e: KeyboardEvent) => {
+            if (e.key === 'Escape') {
+                setOpen(false)
+                btnRef.current?.focus()
+            }
+        }
         document.addEventListener('mousedown', onClick)
-        return () => document.removeEventListener('mousedown', onClick)
+        document.addEventListener('keydown', onKey)
+        return () => {
+            document.removeEventListener('mousedown', onClick)
+            document.removeEventListener('keydown', onKey)
+        }
     }, [])
 
     const linkClass =
-        'font-[family-name:var(--font-mono)] text-[13px] text-[var(--rd-text-3)] transition-colors duration-200 hover:text-[var(--rd-accent-ink)]'
+        'font-[family-name:var(--font-mono)] text-[13px] text-[var(--rd-text-2)] transition-colors duration-200 hover:text-[var(--rd-accent-ink)]'
 
     return (
-        <nav className="flex items-center justify-between gap-3">
+        <nav
+            ref={ref}
+            className="relative flex items-center justify-between gap-3"
+        >
             <div className="flex items-center gap-4 sm:gap-6">
                 {/* logo */}
                 <a
                     href="https://hovanhoa.net"
                     aria-label="hovanhoa home"
-                    className="shrink-0"
+                    className="shrink-0 rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--rd-accent)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--rd-bg-sub)]"
                 >
                     <Image
                         src="/avatar.png"
@@ -122,55 +263,161 @@ export default function Navbar() {
                         className="rounded-full border border-[var(--rd-border)]"
                     />
                 </a>
-                {/* app switcher — orange-tinted, mono */}
-                <div className="relative" ref={ref}>
-                    <button
-                        type="button"
-                        onClick={() => setOpen((o) => !o)}
-                        className="inline-flex items-center gap-1.5 rounded-full bg-[var(--rd-accent-bg)] px-3 py-1.5 font-[family-name:var(--font-mono)] text-[13px] font-semibold text-[var(--rd-accent-ink)] transition-opacity hover:opacity-80"
-                    >
-                        <span className="text-[var(--rd-accent)]">/</span>
-                        <span className="min-w-[7ch] text-center">{CURRENT}</span>
-                        <Caret />
-                    </button>
-                    {open && (
-                        <div className="absolute left-0 top-full z-50 mt-2 w-40 overflow-hidden rounded-xl border border-[var(--rd-border)] bg-[var(--rd-surface)] p-1 shadow-lg">
-                            {APPS.map((a) => (
-                                <a
-                                    key={a.label}
-                                    href={a.href}
-                                    className={`block rounded-lg px-3 py-2 font-[family-name:var(--font-mono)] text-[13px] transition-colors ${
-                                        a.label === CURRENT
-                                            ? 'bg-[var(--rd-accent-bg)] text-[var(--rd-accent-ink)]'
-                                            : 'text-[var(--rd-text-2)] hover:bg-[var(--rd-surface-2)] hover:text-[var(--rd-text)]'
-                                    }`}
-                                >
-                                    {a.label}
-                                </a>
-                            ))}
-                        </div>
-                    )}
-                </div>
 
-                {/* inline links */}
+                {/* mega-menu trigger */}
+                <button
+                    ref={btnRef}
+                    type="button"
+                    onClick={() => setOpen((o) => !o)}
+                    aria-haspopup="menu"
+                    aria-expanded={open}
+                    className="inline-flex items-center gap-1.5 rounded-full bg-[var(--rd-accent-bg)] px-3 py-1.5 font-[family-name:var(--font-mono)] text-[13px] font-semibold text-[var(--rd-accent-ink)] transition-opacity hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--rd-accent)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--rd-bg-sub)]"
+                >
+                    <CurrentIcon
+                        size={15}
+                        className="text-[var(--rd-accent)]"
+                    />
+                    <span className="min-w-[5ch] text-center">{CURRENT}</span>
+                    <Caret open={open} />
+                </button>
+
+                {/* inline quick links */}
                 <div className="hidden items-center gap-5 sm:flex sm:gap-7">
-                    {APPS.map((a) => (
-                        <a
-                            key={a.label}
-                            href={a.href}
-                            className={`${linkClass} ${
-                                a.label === CURRENT
-                                    ? 'text-[var(--rd-accent-ink)]'
-                                    : ''
-                            }`}
-                        >
-                            {a.label}
-                        </a>
-                    ))}
+                    <a href={`${BASE_URL}/#blog`} className={linkClass}>
+                        blog
+                    </a>
+                    <a
+                        href={INSIGHT_URL}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className={linkClass}
+                    >
+                        insight
+                    </a>
+                    <a
+                        href={GALLERY_URL}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className={linkClass}
+                    >
+                        gallery
+                    </a>
                 </div>
             </div>
 
             <ThemeToggle />
+
+            {/* mega-menu panel — content-aligned, spans the header width */}
+            {open && (
+                <div
+                    role="menu"
+                    aria-label="explore hovanhoa"
+                    className="rd-menu-in absolute left-0 top-full z-40 mt-2 w-[min(100%,680px)] overflow-hidden rounded-[var(--rd-r-lg)] border border-[var(--rd-border)] bg-[var(--rd-surface)] shadow-[0_16px_40px_-12px_rgb(0_0_0_/_0.18),0_6px_12px_-6px_rgb(0_0_0_/_0.1)]"
+                >
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
+                        {COLUMNS.map((col, ci) => (
+                            <div
+                                key={col.title}
+                                className={`px-3.5 py-3.5 ${
+                                    ci > 0
+                                        ? 'lg:border-l lg:border-[var(--rd-line)]'
+                                        : ''
+                                }`}
+                            >
+                                <h3 className="mb-1.5 px-2 font-[family-name:var(--font-mono)] text-[10px] font-medium uppercase tracking-[0.12em] text-[var(--rd-text-3)]">
+                                    {col.title}
+                                </h3>
+                                <ul>
+                                    {col.items.map((it) => {
+                                        const active = it.label === CURRENT
+                                        const Icon = it.icon
+                                        return (
+                                            <li key={it.label}>
+                                                <a
+                                                    href={it.href}
+                                                    role="menuitem"
+                                                    aria-current={
+                                                        active
+                                                            ? 'page'
+                                                            : undefined
+                                                    }
+                                                    {...(it.external
+                                                        ? {
+                                                              target: '_blank',
+                                                              rel: 'noopener noreferrer',
+                                                          }
+                                                        : {})}
+                                                    onClick={() =>
+                                                        setOpen(false)
+                                                    }
+                                                    className={`group flex items-center gap-2.5 rounded-[var(--rd-r-sm)] px-2 py-1.5 outline-none transition-colors focus-visible:ring-2 focus-visible:ring-[var(--rd-accent)] ${
+                                                        active
+                                                            ? 'bg-[var(--rd-accent-bg)]'
+                                                            : 'hover:bg-[var(--rd-surface-2)]'
+                                                    }`}
+                                                >
+                                                    <Icon
+                                                        size={16}
+                                                        className={`shrink-0 ${
+                                                            active
+                                                                ? 'text-[var(--rd-accent-ink)]'
+                                                                : 'text-[var(--rd-text-3)] group-hover:text-[var(--rd-accent-ink)]'
+                                                        }`}
+                                                    />
+                                                    <span className="min-w-0">
+                                                        <span
+                                                            className={`flex items-center gap-1.5 text-[13px] font-medium leading-tight transition-colors ${
+                                                                active
+                                                                    ? 'text-[var(--rd-accent-ink)]'
+                                                                    : 'text-[var(--rd-text)] group-hover:text-[var(--rd-accent-ink)]'
+                                                            }`}
+                                                        >
+                                                            {it.label}
+                                                            {active && (
+                                                                <span
+                                                                    aria-hidden
+                                                                    className="h-1.5 w-1.5 rounded-full bg-[var(--rd-accent)]"
+                                                                />
+                                                            )}
+                                                        </span>
+                                                        <span className="block truncate text-[11.5px] leading-snug text-[var(--rd-text-2)]">
+                                                            {it.desc}
+                                                        </span>
+                                                    </span>
+                                                </a>
+                                            </li>
+                                        )
+                                    })}
+                                </ul>
+                            </div>
+                        ))}
+                    </div>
+
+                    {/* footer row */}
+                    <div className="flex items-center justify-between gap-4 border-t border-[var(--rd-border)] bg-[var(--rd-bg-sub)] px-4 py-2.5">
+                        <a
+                            href={`${BASE_URL}/ls`}
+                            onClick={() => setOpen(false)}
+                            className="inline-flex items-center gap-1.5 font-[family-name:var(--font-mono)] text-[13px] font-semibold text-[var(--rd-accent-ink)] transition-opacity hover:opacity-80"
+                        >
+                            browse everything
+                            <span aria-hidden>→</span>
+                        </a>
+                        <div className="hidden items-center gap-5 sm:flex">
+                            {FOOTER_LINKS.map((l) => (
+                                <a
+                                    key={l.label}
+                                    href={l.href}
+                                    onClick={() => setOpen(false)}
+                                    className="font-[family-name:var(--font-mono)] text-[12.5px] text-[var(--rd-text-2)] transition-colors hover:text-[var(--rd-text)]"
+                                >
+                                    {l.label}
+                                </a>
+                            ))}
+                        </div>
+                    </div>
+                </div>
+            )}
         </nav>
     )
 }

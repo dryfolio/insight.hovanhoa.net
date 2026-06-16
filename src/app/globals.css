@@ -218,3 +218,23 @@ body {
     grid-template-columns: 1fr;
   }
 }
+/* nav app-switcher overlay entrance — the one floating surface in the header */
+@keyframes rd-menu-in {
+    from {
+        opacity: 0;
+        transform: translateY(-4px) scale(0.985);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+.rd-menu-in {
+    transform-origin: top left;
+    animation: rd-menu-in 150ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+@media (prefers-reduced-motion: reduce) {
+    .rd-menu-in {
+        animation: none;
+    }
+}
