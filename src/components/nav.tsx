@@ -283,8 +283,8 @@ export default function Navbar() {
 
                 {/* inline quick links */}
                 <div className="hidden items-center gap-5 sm:flex sm:gap-7">
-                    <a href={`${BASE_URL}/#blog`} className={linkClass}>
-                        blog
+                    <a href={BASE_URL} className={linkClass}>
+                        home
                     </a>
                     <a href={INSIGHT_URL} className={linkClass}>
                         insight
