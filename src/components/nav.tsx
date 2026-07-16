@@ -181,7 +181,7 @@ function ThemeToggle() {
             onClick={toggle}
             aria-label="Toggle dark mode"
             aria-pressed={dark}
-            className="-m-1 inline-flex h-11 w-11 items-center justify-center rounded-lg text-[var(--rd-text-3)] transition-colors hover:bg-[var(--rd-surface-2)] hover:text-[var(--rd-text)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--rd-accent)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--rd-bg-sub)]"
+            className="-m-1 inline-flex h-11 w-11 items-center justify-center rounded-lg text-[var(--rd-text-3)] transition-colors hover:bg-[var(--rd-surface-2)] hover:text-[var(--rd-text)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--rd-text)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--rd-bg-sub)]"
         >
             {dark ? (
                 <svg
@@ -241,7 +241,7 @@ export default function Navbar() {
     }, [])
 
     const linkClass =
-        'font-[family-name:var(--font-mono)] text-[13px] text-[var(--rd-text-2)] transition-colors duration-200 hover:text-[var(--rd-accent-ink)]'
+        'font-[family-name:var(--font-mono)] text-[13px] text-[var(--rd-text-2)] transition-colors duration-200 hover:text-[var(--rd-text)]'
 
     return (
         <nav
@@ -253,7 +253,7 @@ export default function Navbar() {
                 <a
                     href="https://hovanhoa.net"
                     aria-label="hovanhoa home"
-                    className="shrink-0 rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--rd-accent)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--rd-bg-sub)]"
+                    className="shrink-0 rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--rd-text)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--rd-bg-sub)]"
                 >
                     <Image
                         src="/avatar.png"
@@ -271,11 +271,11 @@ export default function Navbar() {
                     onClick={() => setOpen((o) => !o)}
                     aria-haspopup="menu"
                     aria-expanded={open}
-                    className="inline-flex items-center gap-1.5 rounded-full bg-[var(--rd-accent-bg)] px-3 py-1.5 font-[family-name:var(--font-mono)] text-[13px] font-semibold text-[var(--rd-accent-ink)] transition-opacity hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--rd-accent)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--rd-bg-sub)]"
+                    className="inline-flex items-center gap-1.5 rounded-full bg-[var(--rd-surface-2)] px-3 py-1.5 font-[family-name:var(--font-mono)] text-[13px] font-semibold text-[var(--rd-text)] transition-opacity hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--rd-text)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--rd-bg-sub)]"
                 >
                     <CurrentIcon
                         size={15}
-                        className="text-[var(--rd-accent)]"
+                        className="text-[var(--rd-text)]"
                     />
                     <span className="min-w-[5ch] text-center">{CURRENT}</span>
                     <Caret open={open} />
@@ -334,9 +334,9 @@ export default function Navbar() {
                                                     onClick={() =>
                                                         setOpen(false)
                                                     }
-                                                    className={`group flex items-center gap-2.5 rounded-[var(--rd-r-sm)] px-2 py-1.5 outline-none transition-colors focus-visible:ring-2 focus-visible:ring-[var(--rd-accent)] ${
+                                                    className={`group flex items-center gap-2.5 rounded-[var(--rd-r-sm)] px-2 py-1.5 outline-none transition-colors focus-visible:ring-2 focus-visible:ring-[var(--rd-text)] ${
                                                         active
-                                                            ? 'bg-[var(--rd-accent-bg)]'
+                                                            ? 'bg-[var(--rd-surface-2)]'
                                                             : 'hover:bg-[var(--rd-surface-2)]'
                                                     }`}
                                                 >
@@ -344,23 +344,23 @@ export default function Navbar() {
                                                         size={16}
                                                         className={`shrink-0 ${
                                                             active
-                                                                ? 'text-[var(--rd-accent-ink)]'
-                                                                : 'text-[var(--rd-text-3)] group-hover:text-[var(--rd-accent-ink)]'
+                                                                ? 'text-[var(--rd-text)]'
+                                                                : 'text-[var(--rd-text-3)] group-hover:text-[var(--rd-text)]'
                                                         }`}
                                                     />
                                                     <span className="min-w-0">
                                                         <span
                                                             className={`flex items-center gap-1.5 text-[13px] font-medium leading-tight transition-colors ${
                                                                 active
-                                                                    ? 'text-[var(--rd-accent-ink)]'
-                                                                    : 'text-[var(--rd-text)] group-hover:text-[var(--rd-accent-ink)]'
+                                                                    ? 'text-[var(--rd-text)]'
+                                                                    : 'text-[var(--rd-text)] group-hover:text-[var(--rd-text)]'
                                                             }`}
                                                         >
                                                             {it.label}
                                                             {active && (
                                                                 <span
                                                                     aria-hidden
-                                                                    className="h-1.5 w-1.5 rounded-full bg-[var(--rd-accent)]"
+                                                                    className="h-1.5 w-1.5 rounded-full bg-[var(--rd-text)]"
                                                                 />
                                                             )}
                                                         </span>
@@ -382,7 +382,7 @@ export default function Navbar() {
                         <a
                             href={`${BASE_URL}/ls`}
                             onClick={() => setOpen(false)}
-                            className="inline-flex items-center gap-1.5 font-[family-name:var(--font-mono)] text-[13px] font-semibold text-[var(--rd-accent-ink)] transition-opacity hover:opacity-80"
+                            className="inline-flex items-center gap-1.5 font-[family-name:var(--font-mono)] text-[13px] font-semibold text-[var(--rd-text)] transition-opacity hover:opacity-80"
                         >
                             browse everything
                             <span aria-hidden>→</span>
