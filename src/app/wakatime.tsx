@@ -11,6 +11,8 @@ const WAKA_LANGUAGES_API =
 const WAKA_CALENDAR_SVG =
     'https://wakatime.com/share/@hovanhoa/0eb457d2-d35a-4eaf-b76a-0fa76610d320.svg'
 
+const REVALIDATE = 86400
+
 export interface WakaActivityPoint {
     range: {
         start: string
@@ -36,7 +38,9 @@ export interface WakaLanguage {
 }
 
 export async function getWakaCodingActivity(): Promise<WakaActivityPoint[]> {
-    const raw = await fetch(WAKA_CODING_ACTIVITY_API)
+    const raw = await fetch(WAKA_CODING_ACTIVITY_API, {
+        next: { revalidate: REVALIDATE },
+    })
     const data = (
         (await raw.json()) as {
             data: Omit<WakaActivityPoint, 'Coding Hours'>[]
@@ -50,7 +54,9 @@ export async function getWakaCodingActivity(): Promise<WakaActivityPoint[]> {
 }
 
 export async function getWakaLanguages(): Promise<WakaLanguage[]> {
-    const raw = await fetch(WAKA_LANGUAGES_API)
+    const raw = await fetch(WAKA_LANGUAGES_API, {
+        next: { revalidate: REVALIDATE },
+    })
     return ((await raw.json()) as { data: WakaLanguage[] }).data
 }
 
@@ -121,7 +127,7 @@ export function CodingCalendar() {
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
                 alt="Coding activity calendar"
-                src={WAKA_CALENDAR_SVG}
+                src={`${WAKA_CALENDAR_SVG}?d=${new Date().toISOString().slice(0, 10)}`}
                 className="h-auto w-full"
             />
         </div>
