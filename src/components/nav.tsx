@@ -4,6 +4,7 @@ import Image from 'next/image'
 import { useEffect, useRef, useState } from 'react'
 import {
     RiBookOpenLine,
+    RiBookShelfLine,
     RiGithubFill,
     RiHome5Line,
     RiImageLine,
@@ -17,6 +18,7 @@ import {
 } from '@remixicon/react'
 import {
     BASE_URL,
+    BOOK_URL,
     GALLERY_URL,
     GITHUB,
     INFO_URL,
@@ -93,6 +95,13 @@ const COLUMNS: Column[] = [
                 desc: 'links & bio',
                 href: INFO_URL,
                 icon: RiLinksLine,
+                external: true,
+            },
+            {
+                label: 'book',
+                desc: 'reading list',
+                href: BOOK_URL,
+                icon: RiBookShelfLine,
                 external: true,
             },
         ],
