@@ -288,7 +288,7 @@ export default function Navbar() {
                         size={15}
                         className="text-[var(--rd-text)]"
                     />
-                    <span className="min-w-[5ch] text-center">{CURRENT}</span>
+                    <span className="min-w-[7ch] text-center">{CURRENT}</span>
                     <Caret open={open} />
                 </button>
 
