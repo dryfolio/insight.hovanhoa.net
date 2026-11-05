@@ -1,6 +1,7 @@
-import { BarChart } from '@/components/Tremor'
-import { Eyebrow } from '@/components/redesign/eyebrow'
+import { HoursChart } from '@/components/charts'
 import { DistRows } from '@/components/redesign/dist-rows'
+import { Panel } from '@/components/panel'
+import { EmptyState } from '@/components/empty-state'
 
 const WAKA_CODING_ACTIVITY_API =
     'https://wakatime.com/share/@hovanhoa/0d76f73e-d398-4c07-9bc6-781f52986fd8.json'
@@ -47,6 +48,9 @@ export async function getWakaCodingActivity(): Promise<WakaActivityPoint[]> {
         }
     ).data
 
+    // WakaTime answers {"error": ...} while it rebuilds a share — treat as empty
+    if (!Array.isArray(data)) return []
+
     return data.map((item) => ({
         ...item,
         'Coding Hours': (item.grand_total.total_seconds / 3600).toFixed(1),
@@ -57,32 +61,21 @@ export async function getWakaLanguages(): Promise<WakaLanguage[]> {
     const raw = await fetch(WAKA_LANGUAGES_API, {
         next: { revalidate: REVALIDATE },
     })
-    return ((await raw.json()) as { data: WakaLanguage[] }).data
+    const data = ((await raw.json()) as { data?: WakaLanguage[] }).data
+    return Array.isArray(data) ? data : []
 }
 
 export function CodingHoursChart({ data }: { data: WakaActivityPoint[] }) {
     return (
-        <div className="rd-card p-[clamp(18px,2.2vw,26px)]">
-            <div className="mb-5 flex items-end justify-between gap-4">
-                <div>
-                    <Eyebrow>Coding · WakaTime</Eyebrow>
-                    <h3 className="mt-2.5 text-[1.35rem] tracking-[-0.03em] text-[var(--rd-text)]">
-                        Hours per day
-                    </h3>
-                </div>
-                <span className="rd-chip font-[family-name:var(--font-mono)] text-[11px]">
-                    30d
-                </span>
-            </div>
-            <BarChart
-                categories={['Coding Hours']}
-                colors={['orange']}
-                data={data}
-                index="range.date"
-                showGridLines={false}
-                showLegend={false}
-            />
-        </div>
+        <Panel label="Hours per day" meta="last 30 days" className="h-full">
+            {data.length ? (
+                <HoursChart
+                    data={data as unknown as Record<string, unknown>[]}
+                />
+            ) : (
+                <EmptyState>No coding activity recorded yet.</EmptyState>
+            )}
+        </Panel>
     )
 }
 
@@ -93,43 +86,23 @@ export function LanguageDist({ languages }: { languages: WakaLanguage[] }) {
     }))
 
     return (
-        <div className="rd-card p-[clamp(18px,2.2vw,26px)]">
-            <div className="mb-5 flex items-end justify-between gap-4">
-                <div>
-                    <Eyebrow>Languages · WakaTime</Eyebrow>
-                    <h3 className="mt-2.5 text-[1.35rem] tracking-[-0.03em] text-[var(--rd-text)]">
-                        What I wrote in
-                    </h3>
-                </div>
-                <span className="rd-chip font-[family-name:var(--font-mono)] text-[11px]">
-                    all time
-                </span>
-            </div>
+        <Panel label="Languages" meta="share of time" flush className="h-full">
             <DistRows rows={rows} />
-        </div>
+        </Panel>
     )
 }
 
 export function CodingCalendar() {
     return (
-        <div className="rd-card p-[clamp(18px,2.2vw,26px)]">
-            <div className="mb-5 flex items-end justify-between gap-4">
-                <div>
-                    <Eyebrow>Activity · WakaTime</Eyebrow>
-                    <h3 className="mt-2.5 text-[1.35rem] tracking-[-0.03em] text-[var(--rd-text)]">
-                        Coding activity calendar
-                    </h3>
-                </div>
-                <span className="rd-chip font-[family-name:var(--font-mono)] text-[11px]">
-                    1y
-                </span>
+        <Panel label="Coding activity calendar" meta="last 12 months">
+            <div className="overflow-x-auto">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                    alt="Coding activity calendar"
+                    src={`${WAKA_CALENDAR_SVG}?d=${new Date().toISOString().slice(0, 10)}`}
+                    className="rd-calendar h-auto w-full min-w-[640px]"
+                />
             </div>
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-                alt="Coding activity calendar"
-                src={`${WAKA_CALENDAR_SVG}?d=${new Date().toISOString().slice(0, 10)}`}
-                className="h-auto w-full"
-            />
-        </div>
+        </Panel>
     )
 }
