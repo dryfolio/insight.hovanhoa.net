@@ -6,31 +6,6 @@
     --foreground-rgb: 0, 0, 0;
     --background-start-rgb: 252, 252, 252;
     --background-end-rgb: 255, 255, 255;
-    --rd-bg: #f7f7f5;
-    --rd-bg-sub: #f0f0ed;
-    --rd-surface: #ffffff;
-    --rd-surface-2: #f3f3f0;
-    --rd-border: #e4e4e0;
-    --rd-border-2: #d4d4cf;
-    --rd-line: #ebebe7;
-    --rd-text: #0c0c0c;
-    --rd-text-2: #5c5b56;
-    --rd-text-3: #8a8983;
-    --rd-text-4: #b3b2ab;
-    --rd-r-sm: 10px;
-    --rd-r: 16px;
-    --rd-r-lg: 24px;
-    --rd-maxw: 1120px;
-    --rd-pad: clamp(24px, 5.5vw, 56px);
-    --rd-nav-h: 64px;
-    --font-display: 'Libertinus Serif', 'Noto Serif', Georgia, 'Times New Roman',
-        serif;
-    --rd-label-plum: #f3e6ec;
-    --rd-label-plum-fg: #6b3a52;
-    --rd-label-pine: #e4f0e9;
-    --rd-label-pine-fg: #2d5a42;
-    --rd-label-slate: #e8eaf0;
-    --rd-label-slate-fg: #3d4458;
 }
 
 body {
@@ -71,8 +46,6 @@ body {
    but no toggle is wired.
    ============================================================ */
 :root {
-    /* neutrals, shape and layout tokens live in the first :root block */
-
     /* accent (orange) */
     --rd-accent: #d8602f;
     --rd-accent-ink: #b54a1f;
@@ -88,6 +61,31 @@ body {
         sans-serif;
     --font-mono: var(--font-geist-mono), ui-monospace, 'SFMono-Regular', Menlo,
         monospace;
+    --rd-bg: #f7f7f5;
+    --rd-bg-sub: #f0f0ed;
+    --rd-surface: #ffffff;
+    --rd-surface-2: #f3f3f0;
+    --rd-border: #e4e4e0;
+    --rd-border-2: #d4d4cf;
+    --rd-line: #ebebe7;
+    --rd-text: #0c0c0c;
+    --rd-text-2: #5c5b56;
+    --rd-text-3: #8a8983;
+    --rd-text-4: #b3b2ab;
+    --rd-r-sm: 10px;
+    --rd-r: 16px;
+    --rd-r-lg: 24px;
+    --rd-maxw: 1120px;
+    --rd-pad: clamp(24px, 5.5vw, 56px);
+    --rd-nav-h: 64px;
+    --font-display: 'Libertinus Serif', 'Noto Serif', Georgia, 'Times New Roman',
+        serif;
+    --rd-label-plum: #f3e6ec;
+    --rd-label-plum-fg: #6b3a52;
+    --rd-label-pine: #e4f0e9;
+    --rd-label-pine-fg: #2d5a42;
+    --rd-label-slate: #e8eaf0;
+    --rd-label-slate-fg: #3d4458;
 }
 
 .dark {
