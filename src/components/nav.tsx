@@ -1,6 +1,5 @@
 'use client'
 
-import Image from 'next/image'
 import { useEffect, useRef, useState } from 'react'
 import {
     RiBookOpenLine,
@@ -136,33 +135,45 @@ const COLUMNS: Column[] = [
     },
 ]
 
-// dev-native extras pinned to the footer (both routes exist)
+// dev-native extras pinned to the menu footer (both routes exist)
 const FOOTER_LINKS = [
     { label: 'llms.txt', href: `${BASE_URL}/llms.txt` },
     { label: 'sitemap', href: `${BASE_URL}/sitemap.xml` },
 ]
 
-// the trigger icon mirrors the page you're on
-const CurrentIcon =
-    COLUMNS.flatMap((c) => c.items).find((it) => it.label === CURRENT)?.icon ??
-    RiHome5Line
+// inline quick links — identical order on every family site; the breakpoint
+// tiers decide how many fit beside the wordmark
+const QUICK_LINKS = [
+    { label: 'home', href: BASE_URL, tier: '' },
+    { label: 'blog', href: BLOG_URL, tier: '' },
+    { label: 'insight', href: INSIGHT_URL, tier: '' },
+    { label: 'gallery', href: GALLERY_URL, tier: 'hidden lg:inline-flex' },
+    { label: 'music', href: MUSIC_URL, tier: 'hidden lg:inline-flex' },
+    { label: 'book', href: BOOK_URL, tier: 'hidden xl:inline-flex' },
+    { label: 'status', href: STATUS_URL, tier: 'hidden xl:inline-flex' },
+]
 
-function Caret({ open }: { open?: boolean }) {
+const focusRing =
+    'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--rd-text)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--rd-bg)]'
+
+function UpDown({ open }: { open?: boolean }) {
     return (
         <svg
-            width="11"
-            height="11"
+            width="12"
+            height="12"
             viewBox="0 0 24 24"
             fill="none"
             stroke="currentColor"
-            strokeWidth="2.4"
+            strokeWidth="2"
             strokeLinecap="round"
             strokeLinejoin="round"
-            className={`transition-transform duration-200 ${
-                open ? '-rotate-180' : ''
+            aria-hidden
+            className={`text-[var(--rd-text-3)] transition-transform duration-200 ${
+                open ? 'rotate-180' : ''
             }`}
         >
-            <path d="m6 9 6 6 6-6" />
+            <path d="m7 15 5 5 5-5" />
+            <path d="m7 9 5-5 5 5" />
         </svg>
     )
 }
@@ -192,12 +203,12 @@ function ThemeToggle() {
             onClick={toggle}
             aria-label="Toggle dark mode"
             aria-pressed={dark}
-            className="-m-1 inline-flex h-11 w-11 items-center justify-center rounded-lg text-[var(--rd-text-3)] transition-colors hover:bg-[var(--rd-surface-2)] hover:text-[var(--rd-text)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--rd-text)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--rd-bg-sub)]"
+            className={`inline-flex h-9 w-9 items-center justify-center rounded-full text-[var(--rd-text-2)] transition-colors hover:bg-[var(--rd-surface-2)] hover:text-[var(--rd-text)] ${focusRing}`}
         >
             {dark ? (
                 <svg
-                    width="17"
-                    height="17"
+                    width="16"
+                    height="16"
                     viewBox="0 0 24 24"
                     fill="none"
                     stroke="currentColor"
@@ -210,8 +221,8 @@ function ThemeToggle() {
                 </svg>
             ) : (
                 <svg
-                    width="17"
-                    height="17"
+                    width="16"
+                    height="16"
                     viewBox="0 0 24 24"
                     fill="none"
                     stroke="currentColor"
@@ -228,7 +239,7 @@ function ThemeToggle() {
 
 export default function Navbar() {
     const [open, setOpen] = useState(false)
-    const ref = useRef<HTMLElement>(null)
+    const ref = useRef<HTMLDivElement>(null)
     const btnRef = useRef<HTMLButtonElement>(null)
 
     useEffect(() => {
@@ -251,180 +262,144 @@ export default function Navbar() {
         }
     }, [])
 
-    const linkClass =
-        'font-[family-name:var(--font-mono)] text-[13px] text-[var(--rd-text-2)] transition-colors duration-200 hover:text-[var(--rd-text)]'
-
     return (
-        <nav
-            ref={ref}
-            className="relative flex items-center justify-between gap-3"
-        >
-            <div className="flex items-center gap-4 sm:gap-6">
-                {/* logo */}
-                <a
-                    href="https://hovanhoa.net"
-                    aria-label="hovanhoa home"
-                    className="shrink-0 rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--rd-text)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--rd-bg-sub)]"
-                >
-                    <Image
-                        src="/avatar.png"
-                        alt="hovanhoa"
-                        width={34}
-                        height={34}
-                        className="rounded-full border border-[var(--rd-border)]"
-                    />
-                </a>
+        <header className="sticky top-0 z-50 w-full bg-[var(--rd-bg)]">
+            <nav className="relative mx-auto flex h-[var(--rd-nav-h)] max-w-[var(--rd-maxw)] items-center gap-4 px-[var(--rd-pad)]">
+                {/* wordmark — doubles as the family switcher */}
+                <div ref={ref} className="relative shrink-0">
+                    <button
+                        ref={btnRef}
+                        type="button"
+                        onClick={() => setOpen((o) => !o)}
+                        aria-haspopup="menu"
+                        aria-expanded={open}
+                        aria-label="Open the hovanhoa family menu"
+                        className={`-ml-2 inline-flex h-9 items-center gap-1.5 rounded-md px-2 transition-opacity hover:opacity-80 ${focusRing}`}
+                    >
+                        <span className="text-[0.9375rem] font-medium lowercase tracking-[-0.03em] text-[var(--rd-text)]">
+                            hovanhoa
+                        </span>
+                        <UpDown open={open} />
+                    </button>
 
-                {/* mega-menu trigger */}
-                <button
-                    ref={btnRef}
-                    type="button"
-                    onClick={() => setOpen((o) => !o)}
-                    aria-haspopup="menu"
-                    aria-expanded={open}
-                    className="inline-flex items-center gap-1.5 rounded-full bg-[var(--rd-surface-2)] px-3 py-1.5 font-[family-name:var(--font-mono)] text-[13px] font-semibold text-[var(--rd-text)] transition-opacity hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--rd-text)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--rd-bg-sub)]"
-                >
-                    <CurrentIcon
-                        size={15}
-                        className="text-[var(--rd-text)]"
-                    />
-                    <span className="min-w-[7ch] text-center">{CURRENT}</span>
-                    <Caret open={open} />
-                </button>
-
-                {/* inline quick links */}
-                <div className="hidden items-center gap-5 sm:flex sm:gap-7">
-                    <a href={BASE_URL} className={linkClass}>
-                        home
-                    </a>
-                    <a href={BLOG_URL} className={linkClass}>
-                        blog
-                    </a>
-                    <a href={INSIGHT_URL} className={linkClass}>
-                        insight
-                    </a>
-                    <a href={GALLERY_URL} className={`${linkClass} hidden lg:inline`}>
-                        gallery
-                    </a>
-                    <a href={MUSIC_URL} className={`${linkClass} hidden lg:inline`}>
-                        music
-                    </a>
-                    <a href={BOOK_URL} className={`${linkClass} hidden xl:inline`}>
-                        book
-                    </a>
-                    <a href={STATUS_URL} className={`${linkClass} hidden xl:inline`}>
-                        status
-                    </a>
-                </div>
-            </div>
-
-            <ThemeToggle />
-
-            {/* mega-menu panel — content-aligned, spans the header width */}
-            {open && (
-                <div
-                    role="menu"
-                    aria-label="explore hovanhoa"
-                    className="rd-menu-in absolute left-0 top-full z-40 mt-2 w-[min(100%,680px)] overflow-hidden rounded-[var(--rd-r-lg)] border border-[var(--rd-border)] bg-[var(--rd-surface)] shadow-[0_16px_40px_-12px_rgb(0_0_0_/_0.18),0_6px_12px_-6px_rgb(0_0_0_/_0.1)]"
-                >
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
-                        {COLUMNS.map((col, ci) => (
-                            <div
-                                key={col.title}
-                                className={`px-3.5 py-3.5 ${
-                                    ci > 0
-                                        ? 'lg:border-l lg:border-[var(--rd-line)]'
-                                        : ''
-                                }`}
-                            >
-                                <h3 className="mb-1.5 px-2 font-[family-name:var(--font-mono)] text-[10px] font-medium uppercase tracking-[0.12em] text-[var(--rd-text-3)]">
-                                    {col.title}
-                                </h3>
-                                <ul>
-                                    {col.items.map((it) => {
-                                        const active = it.label === CURRENT
-                                        const Icon = it.icon
-                                        return (
-                                            <li key={it.label}>
-                                                <a
-                                                    href={it.href}
-                                                    role="menuitem"
-                                                    aria-current={
-                                                        active
-                                                            ? 'page'
-                                                            : undefined
-                                                    }
-                                                    onClick={() =>
-                                                        setOpen(false)
-                                                    }
-                                                    className={`group flex items-center gap-2.5 rounded-[var(--rd-r-sm)] px-2 py-1.5 outline-none transition-colors focus-visible:ring-2 focus-visible:ring-[var(--rd-text)] ${
-                                                        active
-                                                            ? 'bg-[var(--rd-surface-2)]'
-                                                            : 'hover:bg-[var(--rd-surface-2)]'
-                                                    }`}
-                                                >
-                                                    <Icon
-                                                        size={16}
-                                                        className={`shrink-0 ${
-                                                            active
-                                                                ? 'text-[var(--rd-text)]'
-                                                                : 'text-[var(--rd-text-3)] group-hover:text-[var(--rd-text)]'
-                                                        }`}
-                                                    />
-                                                    <span className="min-w-0">
-                                                        <span
-                                                            className={`flex items-center gap-1.5 text-[13px] font-medium leading-tight transition-colors ${
-                                                                active
-                                                                    ? 'text-[var(--rd-text)]'
-                                                                    : 'text-[var(--rd-text)] group-hover:text-[var(--rd-text)]'
-                                                            }`}
-                                                        >
-                                                            {it.label}
-                                                            {active && (
-                                                                <span
-                                                                    aria-hidden
-                                                                    className="h-1.5 w-1.5 rounded-full bg-[var(--rd-text)]"
-                                                                />
-                                                            )}
-                                                        </span>
-                                                        <span className="block truncate text-[11.5px] leading-snug text-[var(--rd-text-2)]">
-                                                            {it.desc}
-                                                        </span>
-                                                    </span>
-                                                </a>
-                                            </li>
-                                        )
-                                    })}
-                                </ul>
-                            </div>
-                        ))}
-                    </div>
-
-                    {/* footer row */}
-                    <div className="flex items-center justify-between gap-4 border-t border-[var(--rd-border)] bg-[var(--rd-bg-sub)] px-4 py-2.5">
-                        <a
-                            href={`${BASE_URL}/ls`}
-                            onClick={() => setOpen(false)}
-                            className="inline-flex items-center gap-1.5 font-[family-name:var(--font-mono)] text-[13px] font-semibold text-[var(--rd-text)] transition-opacity hover:opacity-80"
+                    {open && (
+                        <div
+                            role="menu"
+                            aria-label="explore hovanhoa"
+                            className="rd-menu-in absolute left-0 top-full z-40 mt-1.5 w-[min(calc(100vw-2rem),26rem)] overflow-hidden rounded-[var(--rd-r-sm)] border border-[var(--rd-border)] bg-[var(--rd-bg)] shadow-[0_16px_40px_-12px_rgb(0_0_0_/_0.18),0_6px_12px_-6px_rgb(0_0_0_/_0.1)]"
                         >
-                            browse everything
-                            <span aria-hidden>→</span>
-                        </a>
-                        <div className="hidden items-center gap-5 sm:flex">
-                            {FOOTER_LINKS.map((l) => (
+                            <div className="max-h-[min(80vh,40rem)] overflow-y-auto p-1.5">
+                                {COLUMNS.map((col) => (
+                                    <div
+                                        key={col.title}
+                                        className="mb-1.5 last:mb-0"
+                                    >
+                                        <p className="px-1.5 pb-1.5 pt-1 text-[10px] font-medium uppercase tracking-[0.14em] text-[var(--rd-text-3)]">
+                                            {col.title}
+                                        </p>
+                                        <div className="grid grid-cols-2 gap-1">
+                                            {col.items.map((it) => {
+                                                const active =
+                                                    it.label === CURRENT
+                                                const Icon = it.icon
+                                                return (
+                                                    <a
+                                                        key={it.label}
+                                                        href={it.href}
+                                                        role="menuitem"
+                                                        aria-current={
+                                                            active
+                                                                ? 'page'
+                                                                : undefined
+                                                        }
+                                                        onClick={() =>
+                                                            setOpen(false)
+                                                        }
+                                                        className={`group flex items-center gap-2.5 rounded-md border px-2 py-2 outline-none transition-colors focus-visible:ring-2 focus-visible:ring-[var(--rd-text)] ${
+                                                            active
+                                                                ? 'border-[var(--rd-border)] bg-[var(--rd-surface-2)]'
+                                                                : 'border-transparent hover:border-[var(--rd-border)] hover:bg-[var(--rd-surface)]'
+                                                        }`}
+                                                    >
+                                                        <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-md border border-[var(--rd-border)] bg-[var(--rd-bg)] transition-transform duration-200 group-hover:-rotate-6 group-hover:scale-110">
+                                                            <Icon
+                                                                size={15}
+                                                                className="text-[var(--rd-text)]"
+                                                            />
+                                                        </span>
+                                                        <span className="flex min-w-0 flex-col leading-tight">
+                                                            <span className="truncate text-[13px] font-medium text-[var(--rd-text)]">
+                                                                {it.label}
+                                                            </span>
+                                                            <span className="truncate text-[11px] text-[var(--rd-text-3)]">
+                                                                {it.desc}
+                                                            </span>
+                                                        </span>
+                                                    </a>
+                                                )
+                                            })}
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+
+                            <div className="flex items-center justify-between gap-4 border-t border-[var(--rd-border)] bg-[var(--rd-bg-sub)] px-3.5 py-2.5">
                                 <a
-                                    key={l.label}
-                                    href={l.href}
+                                    href={`${BASE_URL}/ls`}
                                     onClick={() => setOpen(false)}
-                                    className="font-[family-name:var(--font-mono)] text-[12.5px] text-[var(--rd-text-2)] transition-colors hover:text-[var(--rd-text)]"
+                                    className="inline-flex items-center gap-1.5 text-[13px] font-medium text-[var(--rd-text)] transition-opacity hover:opacity-80"
                                 >
-                                    {l.label}
+                                    browse everything
+                                    <span aria-hidden>→</span>
                                 </a>
-                            ))}
+                                <div className="flex items-center gap-4">
+                                    {FOOTER_LINKS.map((l) => (
+                                        <a
+                                            key={l.label}
+                                            href={l.href}
+                                            onClick={() => setOpen(false)}
+                                            className="font-[family-name:var(--font-mono)] text-[12px] text-[var(--rd-text-3)] transition-colors hover:text-[var(--rd-text)]"
+                                        >
+                                            {l.label}
+                                        </a>
+                                    ))}
+                                </div>
+                            </div>
                         </div>
-                    </div>
+                    )}
                 </div>
-            )}
-        </nav>
+
+                {/* quick links — centred between wordmark and actions */}
+                <div className="hidden flex-1 items-center justify-center gap-0.5 md:flex">
+                    {QUICK_LINKS.map((l) => (
+                        <a
+                            key={l.label}
+                            href={l.href}
+                            data-active={
+                                l.label === CURRENT ? 'true' : undefined
+                            }
+                            aria-current={
+                                l.label === CURRENT ? 'page' : undefined
+                            }
+                            className={`${
+                                l.tier || 'inline-flex'
+                            } h-8 items-center whitespace-nowrap rounded-full px-[0.7rem] text-[0.875rem] tracking-[-0.01em] text-[var(--rd-text-3)] transition-colors hover:text-[var(--rd-text)] data-[active=true]:text-[var(--rd-text)] ${focusRing}`}
+                        >
+                            {l.label}
+                        </a>
+                    ))}
+                </div>
+
+                <div className="ml-auto flex shrink-0 items-center gap-2 md:ml-0">
+                    <ThemeToggle />
+                    <a
+                        href={INFO_URL}
+                        className={`hidden h-9 items-center justify-center rounded-full bg-[var(--rd-text)] px-[1.05rem] text-[0.8125rem] font-medium tracking-[-0.01em] text-[var(--rd-bg)] transition-opacity hover:opacity-90 sm:inline-flex ${focusRing}`}
+                    >
+                        connect
+                    </a>
+                </div>
+            </nav>
+        </header>
     )
 }

@@ -1,6 +1,7 @@
-import { AreaChart } from '@/components/Tremor'
+import { TrafficChart } from '@/components/charts'
 import { CloudflareGraph } from '@/lib/cloudflare'
-import { Eyebrow } from '@/components/redesign/eyebrow'
+import { Panel } from '@/components/panel'
+import { EmptyState } from '@/components/empty-state'
 
 export interface CloudflarePoint {
     date: string
@@ -26,8 +27,16 @@ const formatShortenedDate = (isoString: string): string => {
 }
 
 export async function getCloudflareData(): Promise<CloudflareData> {
-    const { data, generatedAt, totalRequests, totalPageviews } =
-        await CloudflareGraph.GetStatistic()
+    const res = await CloudflareGraph.GetStatistic()
+    if (!res?.data?.viewer) {
+        return {
+            chartData: [],
+            totalRequests: 0,
+            totalPageviews: 0,
+            generatedAt: '',
+        }
+    }
+    const { data, generatedAt, totalRequests, totalPageviews } = res
 
     const chartData: CloudflarePoint[] = (
         data.viewer.zones[0]?.httpRequests1dGroups ?? []
@@ -49,32 +58,23 @@ export async function getCloudflareData(): Promise<CloudflareData> {
 
 export function CloudflareChart({ data }: { data: CloudflareData }) {
     return (
-        <div className="rd-card p-[clamp(18px,2.2vw,26px)]">
-            <div className="mb-5 flex items-end justify-between gap-4">
-                <div>
-                    <Eyebrow>Traffic · Cloudflare</Eyebrow>
-                    <h3 className="mt-2.5 text-[1.35rem] tracking-[-0.03em] text-[var(--rd-text)]">
-                        Who stopped by
-                    </h3>
-                </div>
-                <span className="rd-chip font-[family-name:var(--font-mono)] text-[11px]">
-                    30d
-                </span>
-            </div>
-            <AreaChart
-                className="h-64 sm:h-80"
-                data={data.chartData}
-                index="date"
-                categories={['Requests', 'Page Views', 'Unique Visitors']}
-                colors={['orange', 'gray', 'slate']}
-                showGridLines={false}
-                showYAxis={false}
-                showLegend={true}
-                showAnimation={true}
-            />
-            <div className="mt-4 text-right font-[family-name:var(--font-mono)] text-[11.5px] text-[var(--rd-text-3)]">
-                generated {formatShortenedDate(data.generatedAt)}
-            </div>
-        </div>
+        <Panel
+            label="Daily traffic"
+            meta={
+                data.generatedAt
+                    ? `generated ${formatShortenedDate(data.generatedAt)}`
+                    : 'last 30 days'
+            }
+        >
+            {data.chartData.length ? (
+                <TrafficChart
+                    data={
+                        data.chartData as unknown as Record<string, unknown>[]
+                    }
+                />
+            ) : (
+                <EmptyState>Traffic data is unavailable right now.</EmptyState>
+            )}
+        </Panel>
     )
 }

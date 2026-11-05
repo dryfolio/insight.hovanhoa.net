@@ -1,13 +1,4 @@
-import Navbar from '@/components/nav'
-import { Footer } from '@/components/footer'
-import {
-    IMAGE,
-    NAME,
-    ROLE,
-    TWITTER,
-    GITHUB,
-    LINKEDIN,
-} from '@/constants'
+import { IMAGE, NAME, ROLE, TWITTER, GITHUB, LINKEDIN } from '@/constants'
 import { getCloudflareData, CloudflareChart } from './cloudflare'
 import {
     getWakaCodingActivity,
@@ -16,13 +7,17 @@ import {
     LanguageDist,
     CodingCalendar,
 } from '@/app/wakatime'
-import { Eyebrow } from '@/components/redesign/eyebrow'
-import { Reveal } from '@/components/redesign/reveal'
+import { SectionHead } from '@/components/section-head'
+import { cardClass } from '@/components/panel'
 import { KpiTile, type KpiTileData } from '@/components/redesign/kpi-tile'
 import { formatNumber, formatCompact, computeTrend } from '@/lib/utils'
 import type { Metadata } from 'next'
 
 const FULL_NAME = 'Hồ Văn Hòa'
+const WAKATIME_PROFILE = 'https://wakatime.com/@hovanhoa'
+
+const SECTION =
+    'mx-auto max-w-[var(--rd-maxw)] px-[var(--rd-pad)] py-[clamp(48px,6vw,80px)]'
 const INSIGHT_URL = 'https://insight.hovanhoa.net'
 
 export const metadata: Metadata = {
@@ -94,7 +89,7 @@ export default async function Insight() {
     /* ---- KPI tiles (real data) ---- */
     const kpis: KpiTileData[] = [
         {
-            k: 'Coding hours',
+            k: 'coding hours',
             v: formatNumber(totalHours),
             unit: 'h',
             sub: `${formatNumber(avgDailyHours)}h avg / active day`,
@@ -102,7 +97,7 @@ export default async function Insight() {
             spark: codingSpark,
         },
         {
-            k: 'Page views',
+            k: 'page views',
             v: formatCompact(cloudflare.totalPageviews),
             unit: '',
             sub: 'Cloudflare · 30d',
@@ -110,7 +105,7 @@ export default async function Insight() {
             spark: pageViewsSpark,
         },
         {
-            k: 'Requests',
+            k: 'requests',
             v: formatCompact(cloudflare.totalRequests),
             unit: '',
             sub: 'Cloudflare · 30d',
@@ -118,7 +113,7 @@ export default async function Insight() {
             spark: requestsSpark,
         },
         {
-            k: 'Unique visitors',
+            k: 'unique visitors',
             v: formatCompact(totalUniques),
             unit: '',
             sub: 'Cloudflare · 30d',
@@ -147,7 +142,7 @@ export default async function Insight() {
         : null
 
     return (
-        <main className="min-h-screen">
+        <main className="relative min-h-screen">
             <script
                 type="application/ld+json"
                 suppressHydrationWarning
@@ -173,69 +168,86 @@ export default async function Insight() {
                     }),
                 }}
             />
-            {/* ---- sticky header ---- */}
-            <header className="sticky top-0 z-50 border-b border-[var(--rd-border-2)] bg-[var(--rd-bg-sub)] shadow-[0_1px_3px_rgba(0,0,0,0.03)]">
-                <div className="mx-auto w-full max-w-[var(--rd-maxw)] px-[var(--rd-pad)] py-3">
-                    <Navbar />
-                </div>
-            </header>
-            {/* ---- header panel ---- */}
-            <div
-                className="border-b border-[var(--rd-border)]"
-                style={{
-                    background:
-                        'radial-gradient(100% 140% at 0% 0%, var(--rd-accent-bg), transparent 55%), var(--rd-surface-2)',
-                }}
-            >
-                <div className="mx-auto max-w-[var(--rd-maxw)] px-[var(--rd-pad)] pb-12 pt-12">
-                    <Eyebrow>hovanhoa · insight</Eyebrow>
-                    <h1 className="mt-[18px] max-w-[20ch] text-[clamp(2rem,4.6vw,3.4rem)] font-semibold tracking-[-0.04em] text-[var(--rd-text)]">
+            {/* ---- page header ---- */}
+            <section className="mx-auto w-full max-w-[var(--rd-maxw)] px-[var(--rd-pad)] pb-[clamp(2rem,4vw,3rem)] pt-[clamp(3.5rem,8vw,6.5rem)]">
+                <div className="rd-rise max-w-[46rem]">
+                    <h1 className="rd-display m-0 text-[var(--rd-text)] max-[799px]:text-[clamp(2.1rem,9vw,2.6rem)]">
                         My month in code and clicks.
                     </h1>
-                    <p className="rd-lead mt-5">
-                        A small corner of the web where I keep track of the hours
-                        I spend coding and the people who drop by — pulled
-                        straight from WakaTime and Cloudflare, refreshed every
-                        day.
+                    <p className="m-0 mt-[clamp(1.1rem,2vw,1.5rem)] max-w-[56ch] text-pretty text-[clamp(0.98rem,1.25vw,1.0625rem)] leading-[1.65] text-[var(--rd-text-2)]">
+                        A small corner of the web where I keep track of the
+                        hours I spend coding and the people who drop by, pulled
+                        straight from WakaTime and Cloudflare and refreshed
+                        every day.
                     </p>
-                    <div className="mt-4 font-[family-name:var(--font-mono)] text-xs text-[var(--rd-text-3)]">
+                    <p className="m-0 mt-4 font-[family-name:var(--font-mono)] text-[0.72rem] text-[var(--rd-text-3)]">
                         {generatedAt
                             ? `Last updated ${generatedAt}`
                             : 'Last 30 days'}{' '}
                         · sources: Cloudflare, WakaTime
+                    </p>
+                </div>
+            </section>
+
+            {/* ---- at a glance ---- */}
+            <section className="mx-auto max-w-[var(--rd-maxw)] px-[var(--rd-pad)]">
+                <div className={`rd-rise ${cardClass}`}>
+                    <div className="flex items-center justify-between border-b border-[var(--rd-line)] px-[1.15rem] py-2.5 text-[0.7rem] font-medium uppercase tracking-[0.08em] text-[var(--rd-text-3)]">
+                        <span>At a glance</span>
+                        <span className="font-[family-name:var(--font-mono)] normal-case tracking-normal">
+                            last 30 days
+                        </span>
                     </div>
-                </div>
-            </div>
-
-            {/* ---- body ---- */}
-            <div className="mx-auto max-w-[var(--rd-maxw)] px-[var(--rd-pad)] pb-[clamp(56px,8vw,96px)] pt-[clamp(28px,4vw,44px)]">
-                {/* ---- KPI tiles ---- */}
-                <div className="rd-g4">
-                    {kpis.map((t, i) => (
-                        <Reveal key={t.k} delay={i * 50}>
-                            <KpiTile t={t} />
-                        </Reveal>
-                    ))}
-                </div>
-
-                {/* ---- editorial note ---- */}
-                <div className="rd-card mt-3 bg-[var(--rd-bg-sub)] p-[clamp(24px,3vw,34px)]">
-                    <Eyebrow>The short version</Eyebrow>
-                    <p className="mt-[14px] max-w-[58ch] text-[clamp(1.1rem,1.8vw,1.45rem)] leading-[1.45] tracking-[-0.015em] text-[var(--rd-text)]">
+                    <div className="grid grid-cols-2 gap-px bg-[var(--rd-line)] min-[900px]:grid-cols-4">
+                        {kpis.map((t) => (
+                            <KpiTile key={t.k} t={t} />
+                        ))}
+                    </div>
+                    <p className="m-0 border-t border-[var(--rd-line)] px-[1.15rem] py-3.5 text-[0.9rem] leading-[1.55] text-[var(--rd-text-2)]">
                         {editorialNote}
                     </p>
                 </div>
+            </section>
 
-                {/* ---- sections ---- */}
-                <div className="mt-3 space-y-3">
-                    <CloudflareChart data={cloudflare} />
+            {/* ---- traffic ---- */}
+            <section id="traffic" className={`${SECTION} scroll-mt-20`}>
+                <SectionHead
+                    title="Who stopped by"
+                    links={[
+                        {
+                            label: 'Cloudflare',
+                            href: 'https://www.cloudflare.com/web-analytics/',
+                        },
+                    ]}
+                >
+                    <p className="m-0 mt-2 max-w-[58ch] text-[0.95rem] leading-[1.6] text-[var(--rd-text-2)]">
+                        Requests, page views and unique visitors per day.
+                    </p>
+                </SectionHead>
+                <CloudflareChart data={cloudflare} />
+            </section>
+
+            {/* ---- coding ---- */}
+            <section
+                id="coding"
+                className="mx-auto max-w-[var(--rd-maxw)] scroll-mt-20 px-[var(--rd-pad)] pb-[clamp(48px,6vw,80px)]"
+            >
+                <SectionHead
+                    title="Time at the keyboard"
+                    links={[{ label: 'WakaTime', href: WAKATIME_PROFILE }]}
+                >
+                    <p className="m-0 mt-2 max-w-[58ch] text-[0.95rem] leading-[1.6] text-[var(--rd-text-2)]">
+                        Daily coding hours and the languages they went into.
+                    </p>
+                </SectionHead>
+                <div className="grid gap-4 min-[900px]:grid-cols-[minmax(0,1.5fr)_minmax(0,1fr)]">
                     <CodingHoursChart data={codingActivity} />
                     <LanguageDist languages={languages} />
+                </div>
+                <div className="mt-4">
                     <CodingCalendar />
                 </div>
-            </div>
-
-            <Footer />
+            </section>
         </main>
     )
 }
