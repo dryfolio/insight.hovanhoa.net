@@ -182,7 +182,13 @@ function ThemeToggle() {
     const [dark, setDark] = useState(false)
 
     useEffect(() => {
-        setDark(document.documentElement.classList.contains('dark'))
+        const root = document.documentElement
+        const read = () => setDark(root.classList.contains('dark'))
+        read()
+        // follow theme changes made on another family site
+        const obs = new MutationObserver(read)
+        obs.observe(root, { attributes: true, attributeFilter: ['class'] })
+        return () => obs.disconnect()
     }, [])
 
     const toggle = () => {
@@ -191,9 +197,9 @@ function ThemeToggle() {
         document.documentElement.classList.toggle('dark', next)
         const v = next ? 'dark' : 'light'
         try {
-            // shared across every *.hovanhoa.net subdomain
-            document.cookie = `theme=${v}; path=/; max-age=31536000; samesite=lax`
-            document.cookie = `theme=${v}; path=/; max-age=31536000; samesite=lax; domain=.hovanhoa.net`
+            // one cookie for every *.hovanhoa.net site (host-only on localhost)
+            const family = /(^|\.)hovanhoa\.net$/.test(location.hostname)
+            document.cookie = `theme=${v}; path=/; max-age=31536000; samesite=lax${family ? '; domain=.hovanhoa.net' : ''}`
         } catch {}
     }
 
