@@ -1,23 +1,86 @@
 import { IMAGE, NAME, ROLE, TWITTER, GITHUB, LINKEDIN } from '@/constants'
-import { getCloudflareData, CloudflareChart } from './cloudflare'
+import {
+    getCloudflareData,
+    CloudflareChart,
+    TopCountries,
+    TopBrowsers,
+    ResponseHealth,
+    Protocols,
+} from './cloudflare'
 import {
     getWakaCodingActivity,
     getWakaLanguages,
+    getWakaCalendar,
+    summarizeCoding,
+    aiShare,
     CodingHoursChart,
     LanguageDist,
     CodingCalendar,
+    CodingRhythm,
+    AiAuthorship,
+    AiModels,
 } from '@/app/wakatime'
+import type { ReactNode } from 'react'
 import { SectionHead } from '@/components/section-head'
 import { cardClass } from '@/components/panel'
+import { Eyebrow } from '@/components/redesign/eyebrow'
 import { KpiTile, type KpiTileData } from '@/components/redesign/kpi-tile'
-import { formatNumber, formatCompact, computeTrend } from '@/lib/utils'
+import { StatStrip, type Stat } from '@/components/redesign/stat-strip'
+import {
+    formatNumber,
+    formatCompact,
+    formatPercent,
+    formatBytes,
+    computeTrend,
+} from '@/lib/utils'
 import type { Metadata } from 'next'
 
 const FULL_NAME = 'Hồ Văn Hòa'
 const WAKATIME_PROFILE = 'https://wakatime.com/@hovanhoa'
 
-const SECTION =
-    'mx-auto max-w-[var(--rd-maxw)] px-[var(--rd-pad)] py-[clamp(48px,6vw,80px)]'
+const CHAPTERS = [
+    { id: 'traffic', num: '01', label: 'Traffic' },
+    { id: 'audience', num: '02', label: 'Audience' },
+    { id: 'coding', num: '03', label: 'Coding' },
+    { id: 'ai', num: '04', label: 'AI pairing' },
+] as const
+
+type ChapterId = (typeof CHAPTERS)[number]['id']
+
+// Chapter — one numbered section of the report: eyebrow, serif title with
+// source links, short lede, then content.
+function Chapter({
+    id,
+    title,
+    lede,
+    source,
+    children,
+}: {
+    id: ChapterId
+    title: string
+    lede: string
+    source: { label: string; href: string }
+    children: ReactNode
+}) {
+    const chapter = CHAPTERS.find((c) => c.id === id)!
+    return (
+        <section
+            id={id}
+            className="mx-auto max-w-[var(--rd-maxw)] scroll-mt-20 px-[var(--rd-pad)] pb-[clamp(48px,6vw,80px)]"
+        >
+            <div className="mb-[clamp(36px,4.5vw,56px)] border-t border-[var(--rd-line)]" />
+            <Eyebrow num={chapter.num}>{chapter.label}</Eyebrow>
+            <div className="mt-3">
+                <SectionHead title={title} links={[source]}>
+                    <p className="m-0 mt-2 max-w-[58ch] text-[0.95rem] leading-[1.6] text-[var(--rd-text-2)]">
+                        {lede}
+                    </p>
+                </SectionHead>
+            </div>
+            {children}
+        </section>
+    )
+}
 const INSIGHT_URL = 'https://insight.hovanhoa.net'
 
 export const metadata: Metadata = {
@@ -65,19 +128,23 @@ export const metadata: Metadata = {
 export const revalidate = 86400
 
 export default async function Insight() {
-    const [cloudflare, codingActivity, languages] = await Promise.all([
-        getCloudflareData(),
-        getWakaCodingActivity(),
-        getWakaLanguages(),
-    ])
+    const [cloudflare, codingActivity, languages, calendar] = await Promise.all(
+        [
+            getCloudflareData(),
+            getWakaCodingActivity(),
+            getWakaLanguages(),
+            getWakaCalendar(),
+        ]
+    )
+    const coding = summarizeCoding(codingActivity)
 
     /* ---- derived series ---- */
     const codingSpark = codingActivity.map(
         (d) => Number(d['Coding Hours']) || 0
     )
-    const totalHours = codingSpark.reduce((a, b) => a + b, 0)
-    const activeDays = codingSpark.filter((h) => h > 0).length
-    const avgDailyHours = activeDays ? totalHours / activeDays : 0
+    const avgDailyHours = coding.activeDays
+        ? coding.totalHours / coding.activeDays
+        : 0
 
     const pageViewsSpark = cloudflare.chartData.map((d) => d['Page Views'] || 0)
     const requestsSpark = cloudflare.chartData.map((d) => d.Requests || 0)
@@ -90,9 +157,9 @@ export default async function Insight() {
     const kpis: KpiTileData[] = [
         {
             k: 'coding hours',
-            v: formatNumber(totalHours),
+            v: formatNumber(Math.round(coding.totalHours * 10) / 10),
             unit: 'h',
-            sub: `${formatNumber(avgDailyHours)}h avg / active day`,
+            sub: `${formatNumber(Math.round(avgDailyHours * 10) / 10)}h avg / active day`,
             trend: computeTrend(codingSpark),
             spark: codingSpark,
         },
@@ -100,7 +167,7 @@ export default async function Insight() {
             k: 'page views',
             v: formatCompact(cloudflare.totalPageviews),
             unit: '',
-            sub: 'Cloudflare · 30d',
+            sub: `${formatCompact(cloudflare.totalPageviews / Math.max(cloudflare.chartData.length, 1))} / day`,
             trend: computeTrend(pageViewsSpark),
             spark: pageViewsSpark,
         },
@@ -108,7 +175,7 @@ export default async function Insight() {
             k: 'requests',
             v: formatCompact(cloudflare.totalRequests),
             unit: '',
-            sub: 'Cloudflare · 30d',
+            sub: `${formatCompact(cloudflare.totalRequests / Math.max(cloudflare.chartData.length, 1))} / day`,
             trend: computeTrend(requestsSpark),
             spark: requestsSpark,
         },
@@ -116,9 +183,50 @@ export default async function Insight() {
             k: 'unique visitors',
             v: formatCompact(totalUniques),
             unit: '',
-            sub: 'Cloudflare · 30d',
+            sub: 'sum of daily uniques',
             trend: computeTrend(uniquesSpark),
             spark: uniquesSpark,
+        },
+    ]
+
+    /* ---- secondary figures ---- */
+    const ratio = (part: number, whole: number) => (whole ? part / whole : 0)
+    const stats: Stat[] = [
+        {
+            k: 'bandwidth',
+            v: formatBytes(cloudflare.totalBytes),
+            sub: 'served at the edge',
+        },
+        {
+            k: 'cache hit',
+            v: formatPercent(
+                ratio(cloudflare.cachedRequests, cloudflare.totalRequests)
+            ),
+            sub: `${formatBytes(cloudflare.cachedBytes)} from cache`,
+        },
+        {
+            k: 'encrypted',
+            v: formatPercent(
+                ratio(cloudflare.encryptedRequests, cloudflare.totalRequests)
+            ),
+            sub: 'requests over TLS',
+        },
+        {
+            k: 'threats',
+            v: formatNumber(cloudflare.threats),
+            sub: 'flagged by Cloudflare',
+        },
+        {
+            k: 'countries',
+            v: formatNumber(cloudflare.countries.length),
+            sub: cloudflare.countries[0]
+                ? `led by ${cloudflare.countries[0].name}`
+                : 'reached',
+        },
+        {
+            k: 'AI-assisted',
+            v: formatPercent(aiShare(coding), 0),
+            sub: 'of lines added',
         },
     ]
 
@@ -128,7 +236,7 @@ export default async function Insight() {
     const editorialNote = topLanguage
         ? `${topLanguage} led the coding time this month at ${Math.round(
               languages[0].percent
-          )}% of tracked hours, and site traffic ${
+          )}% of tracked hours, ${formatPercent(aiShare(coding), 0)} of new lines came from an AI pair, and site traffic ${
               trafficUp ? 'climbed' : 'eased'
           } across the last 30 days.`
         : `A quiet view of coding time and site traffic across the last 30 days.`
@@ -186,16 +294,33 @@ export default async function Insight() {
                             : 'Last 30 days'}{' '}
                         · sources: Cloudflare, WakaTime
                     </p>
+                    <nav
+                        aria-label="Report sections"
+                        className="mt-6 flex flex-wrap gap-2"
+                    >
+                        {CHAPTERS.map((c) => (
+                            <a
+                                key={c.id}
+                                href={`#${c.id}`}
+                                className="rd-chip transition-colors hover:border-[var(--rd-border-2)] hover:text-[var(--rd-text)]"
+                            >
+                                <span className="font-[family-name:var(--font-mono)] text-[0.68rem] text-[var(--rd-accent)]">
+                                    {c.num}
+                                </span>
+                                {c.label}
+                            </a>
+                        ))}
+                    </nav>
                 </div>
             </section>
 
             {/* ---- at a glance ---- */}
-            <section className="mx-auto max-w-[var(--rd-maxw)] px-[var(--rd-pad)]">
+            <section className="mx-auto max-w-[var(--rd-maxw)] px-[var(--rd-pad)] pb-[clamp(40px,5vw,64px)]">
                 <div className={`rd-rise ${cardClass}`}>
-                    <div className="flex items-center justify-between border-b border-[var(--rd-line)] px-[1.15rem] py-2.5 text-[0.7rem] font-medium uppercase tracking-[0.08em] text-[var(--rd-text-3)]">
+                    <div className="flex flex-wrap items-center justify-between gap-2 border-b border-[var(--rd-line)] px-[1.15rem] py-2.5 text-[0.7rem] font-medium uppercase tracking-[0.08em] text-[var(--rd-text-3)]">
                         <span>At a glance</span>
                         <span className="font-[family-name:var(--font-mono)] normal-case tracking-normal">
-                            last 30 days
+                            last 30 days · trend = last 15d vs prior 15d
                         </span>
                     </div>
                     <div className="grid grid-cols-2 gap-px bg-[var(--rd-line)] min-[900px]:grid-cols-4">
@@ -203,51 +328,75 @@ export default async function Insight() {
                             <KpiTile key={t.k} t={t} />
                         ))}
                     </div>
+                    <div className="border-t border-[var(--rd-line)]">
+                        <StatStrip stats={stats} />
+                    </div>
                     <p className="m-0 border-t border-[var(--rd-line)] px-[1.15rem] py-3.5 text-[0.9rem] leading-[1.55] text-[var(--rd-text-2)]">
                         {editorialNote}
                     </p>
                 </div>
             </section>
 
-            {/* ---- traffic ---- */}
-            <section id="traffic" className={`${SECTION} scroll-mt-20`}>
-                <SectionHead
-                    title="Who stopped by"
-                    links={[
-                        {
-                            label: 'Cloudflare',
-                            href: 'https://www.cloudflare.com/web-analytics/',
-                        },
-                    ]}
-                >
-                    <p className="m-0 mt-2 max-w-[58ch] text-[0.95rem] leading-[1.6] text-[var(--rd-text-2)]">
-                        Requests, page views and unique visitors per day.
-                    </p>
-                </SectionHead>
-                <CloudflareChart data={cloudflare} />
-            </section>
-
-            {/* ---- coding ---- */}
-            <section
-                id="coding"
-                className="mx-auto max-w-[var(--rd-maxw)] scroll-mt-20 px-[var(--rd-pad)] pb-[clamp(48px,6vw,80px)]"
+            <Chapter
+                id="traffic"
+                title="Who stopped by"
+                lede="Requests, page views and unique visitors per day, and how the edge answered them."
+                source={{
+                    label: 'Cloudflare',
+                    href: 'https://www.cloudflare.com/web-analytics/',
+                }}
             >
-                <SectionHead
-                    title="Time at the keyboard"
-                    links={[{ label: 'WakaTime', href: WAKATIME_PROFILE }]}
-                >
-                    <p className="m-0 mt-2 max-w-[58ch] text-[0.95rem] leading-[1.6] text-[var(--rd-text-2)]">
-                        Daily coding hours and the languages they went into.
-                    </p>
-                </SectionHead>
+                <CloudflareChart data={cloudflare} />
+                <div className="mt-4 grid gap-4 min-[900px]:grid-cols-2">
+                    <ResponseHealth data={cloudflare} />
+                    <Protocols data={cloudflare} />
+                </div>
+            </Chapter>
+
+            <Chapter
+                id="audience"
+                title="Where they came from"
+                lede="Countries by request volume, and the browsers behind the page views that could be identified."
+                source={{
+                    label: 'Cloudflare',
+                    href: 'https://www.cloudflare.com/web-analytics/',
+                }}
+            >
+                <div className="grid gap-4 min-[900px]:grid-cols-2">
+                    <TopCountries data={cloudflare} />
+                    <TopBrowsers data={cloudflare} />
+                </div>
+            </Chapter>
+
+            <Chapter
+                id="coding"
+                title="Time at the keyboard"
+                lede="Daily coding hours, the languages they went into, and which days of the week do the heavy lifting."
+                source={{ label: 'WakaTime', href: WAKATIME_PROFILE }}
+            >
                 <div className="grid gap-4 min-[900px]:grid-cols-[minmax(0,1.5fr)_minmax(0,1fr)]">
                     <CodingHoursChart data={codingActivity} />
-                    <LanguageDist languages={languages} />
+                    <CodingRhythm summary={coding} />
                 </div>
                 <div className="mt-4">
-                    <CodingCalendar />
+                    <CodingCalendar days={calendar} />
                 </div>
-            </section>
+                <div className="mt-4">
+                    <LanguageDist languages={languages} />
+                </div>
+            </Chapter>
+
+            <Chapter
+                id="ai"
+                title="Pairing with AI"
+                lede="How much of the new code came through an AI assistant, and which models wrote it."
+                source={{ label: 'WakaTime', href: WAKATIME_PROFILE }}
+            >
+                <div className="grid gap-4 min-[900px]:grid-cols-2">
+                    <AiAuthorship summary={coding} />
+                    <AiModels summary={coding} />
+                </div>
+            </Chapter>
         </main>
     )
 }
