@@ -35,3 +35,21 @@ export function computeTrend(series: number[]): string {
     const sign = pct >= 0 ? '+' : ''
     return `${sign}${pct.toFixed(1)}%`
 }
+
+/** Ratio (0–1) as a percentage, e.g. 0.4512 -> "45.1%". */
+export function formatPercent(ratio: number, digits = 1): string {
+    if (!Number.isFinite(ratio)) return '0%'
+    return `${(ratio * 100).toFixed(digits).replace(/\.0+$/, '')}%`
+}
+
+/** Bytes in binary units, e.g. 10_298_879_646 -> "9.6 GB". */
+export function formatBytes(bytes: number): string {
+    const units = ['B', 'KB', 'MB', 'GB', 'TB']
+    let v = bytes || 0
+    let i = 0
+    while (v >= 1024 && i < units.length - 1) {
+        v /= 1024
+        i++
+    }
+    return `${v.toFixed(v >= 100 || i === 0 ? 0 : 1)} ${units[i]}`
+}

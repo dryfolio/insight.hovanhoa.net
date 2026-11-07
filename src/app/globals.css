@@ -304,10 +304,6 @@ body {
 .rd-chart [class*='legend'] p {
     color: var(--rd-text-2);
 }
-/* calendar SVG from WakaTime is drawn for light backgrounds */
-.dark .rd-calendar {
-    filter: invert(0.92) hue-rotate(180deg);
-}
 /* the one accent series — Tremor's "orange" resolves to the brand accent */
 .rd-chart .fill-orange-500 {
     fill: var(--rd-accent);

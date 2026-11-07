@@ -16,7 +16,26 @@ export const GET_STATISTIC = gql`
           requests
           pageViews
           cachedBytes
+          cachedRequests
           bytes
+          encryptedRequests
+          threats
+          countryMap {
+            clientCountryName
+            requests
+          }
+          browserMap {
+            uaBrowserFamily
+            pageViews
+          }
+          responseStatusMap {
+            edgeResponseStatus
+            requests
+          }
+          clientHTTPVersionMap {
+            clientHTTPProtocol
+            requests
+          }
         }
         uniq {
           uniques

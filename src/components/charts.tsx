@@ -16,7 +16,7 @@ export function TrafficChart({ data }: { data: Record<string, unknown>[] }) {
         <AreaChart
             className="rd-chart h-64 sm:h-80"
             data={data}
-            index="date"
+            index="day"
             categories={['Requests', 'Page Views', 'Unique Visitors']}
             colors={['stone', 'orange', 'zinc']}
             showGridLines={true}
@@ -36,7 +36,7 @@ export function HoursChart({ data }: { data: Record<string, unknown>[] }) {
             categories={['Coding Hours']}
             colors={['orange']}
             data={data}
-            index="range.date"
+            index="day"
             showGridLines={true}
             showLegend={false}
             yAxisWidth={36}
