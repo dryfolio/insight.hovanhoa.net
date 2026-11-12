@@ -1,0 +1,13 @@
+{
+	"name": "insight",
+	"compatibility_date": "2026-11-01",
+	"workers_dev": true,
+	"observability": {
+		"enabled": true
+	},
+	"routes": [{ "pattern": "insight.hovanhoa.net", "custom_domain": true }],
+	"assets": {
+		"directory": "./out",
+		"not_found_handling": "404-page"
+	}
+}
