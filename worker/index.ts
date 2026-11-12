@@ -9,17 +9,28 @@ type Ctx = { waitUntil: (promise: Promise<unknown>) => void }
 // Cloudflare analytics and WakaTime both move in daily steps, so an hour of
 // caching per data center keeps the page current without hammering them.
 const CACHE_SECONDS = 3600
+// Bump to drop payloads already cached at the edge.
+const CACHE_KEY = '/api/insight?v=2'
 
 async function insight(request: Request, ctx: Ctx): Promise<Response> {
     const cache = (caches as unknown as { default: Cache }).default
-    const cacheKey = new Request(new URL('/api/insight', request.url))
+    const cacheKey = new Request(new URL(CACHE_KEY, request.url))
     const cached = await cache.match(cacheKey)
     if (cached) return cached
 
-    const res = Response.json(await getInsightData(), {
-        headers: { 'Cache-Control': `public, max-age=${CACHE_SECONDS}` },
+    const data = await getInsightData()
+    // Only cache a full payload, so a failed source is retried on the next
+    // request instead of staying empty for an hour.
+    const complete =
+        data.cloudflare.chartData.length > 0 && data.codingActivity.length > 0
+    const res = Response.json(data, {
+        headers: {
+            'Cache-Control': complete
+                ? `public, max-age=${CACHE_SECONDS}`
+                : 'no-store',
+        },
     })
-    ctx.waitUntil(cache.put(cacheKey, res.clone()))
+    if (complete) ctx.waitUntil(cache.put(cacheKey, res.clone()))
     return res
 }
 
