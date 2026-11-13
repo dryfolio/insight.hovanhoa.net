@@ -1,0 +1,40 @@
+# Rebuilds the static export and redeploys the Worker every day, so the
+# prerendered report (not just the /api/insight refresh in the browser)
+# carries the latest Cloudflare and WakaTime figures.
+name: Deploy
+
+on:
+    schedule:
+        # 00:05 in Asia/Ho_Chi_Minh, right after WakaTime's day rolls over
+        - cron: '5 17 * * *'
+    push:
+        branches: [main]
+    workflow_dispatch:
+
+concurrency:
+    group: deploy
+    cancel-in-progress: false
+
+jobs:
+    deploy:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v4
+            - uses: actions/setup-node@v4
+              with:
+                  node-version: 22
+                  cache: npm
+            - run: npm ci
+            - run: npm run build
+              env:
+                  NEXT_PUBLIC_HASHNODE_API_URL: ${{ secrets.NEXT_PUBLIC_HASHNODE_API_URL }}
+                  NEXT_PUBLIC_HASHNODE_API_KEY: ${{ secrets.NEXT_PUBLIC_HASHNODE_API_KEY }}
+                  NEXT_PUBLIC_HASHNODE_HOST: ${{ secrets.NEXT_PUBLIC_HASHNODE_HOST }}
+                  NEXT_PUBLIC_CLOUDFLARE_API_URL: ${{ secrets.NEXT_PUBLIC_CLOUDFLARE_API_URL }}
+                  NEXT_PUBLIC_CLOUDFLARE_API_KEY: ${{ secrets.NEXT_PUBLIC_CLOUDFLARE_API_KEY }}
+                  NEXT_PUBLIC_CLOUDFLARE_ZONE_ID: ${{ secrets.NEXT_PUBLIC_CLOUDFLARE_ZONE_ID }}
+            - uses: cloudflare/wrangler-action@v3
+              with:
+                  apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+                  accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+                  command: deploy
