@@ -16,6 +16,7 @@ const SECTIONS: FooterSection[] = [
             { label: 'music', href: 'https://music.hovanhoa.net' },
             { label: 'status', href: 'https://status.hovanhoa.net' },
             { label: 'book', href: 'https://book.hovanhoa.net' },
+            { label: 'movie', href: 'https://movie.hovanhoa.net' },
         ],
     },
     {
