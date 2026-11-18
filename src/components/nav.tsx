@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from 'react'
 import {
     RiBookOpenLine,
     RiBookShelfLine,
+    RiFilmLine,
     RiGithubFill,
     RiHome5Line,
     RiImageLine,
@@ -24,6 +25,7 @@ import {
     INFO_URL,
     INSIGHT_URL,
     LINKEDIN,
+    MOVIE_URL,
     MUSIC_URL,
     STATUS_URL,
     TWITTER,
@@ -105,6 +107,13 @@ const COLUMNS: Column[] = [
                 icon: RiBookShelfLine,
                 external: true,
             },
+            {
+                label: 'movie',
+                desc: 'watch log',
+                href: MOVIE_URL,
+                icon: RiFilmLine,
+                external: true,
+            },
         ],
     },
     {
@@ -150,6 +159,7 @@ const QUICK_LINKS = [
     { label: 'gallery', href: GALLERY_URL, tier: 'hidden lg:inline-flex' },
     { label: 'music', href: MUSIC_URL, tier: 'hidden lg:inline-flex' },
     { label: 'book', href: BOOK_URL, tier: 'hidden xl:inline-flex' },
+    { label: 'movie', href: MOVIE_URL, tier: 'hidden xl:inline-flex' },
     { label: 'status', href: STATUS_URL, tier: 'hidden xl:inline-flex' },
 ]
 

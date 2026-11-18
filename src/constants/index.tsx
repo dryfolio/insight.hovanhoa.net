@@ -10,6 +10,7 @@ const MUSIC_URL = 'https://music.hovanhoa.net'
 const STATUS_URL = 'https://status.hovanhoa.net'
 const INFO_URL = 'https://info.hovanhoa.net'
 const BOOK_URL = 'https://book.hovanhoa.net'
+const MOVIE_URL = 'https://movie.hovanhoa.net'
 const TWITTER = '_hovanhoa_'
 const LINKEDIN = 'hovanhoa'
 const GITHUB = 'hovanhoa'
@@ -90,5 +91,6 @@ export {
     STATUS_URL,
     INFO_URL,
     BOOK_URL,
+    MOVIE_URL,
     ROLE,
 }
